@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "313000284444",
+    "firebase_url": "https://ny-dmv-quiz-app.firebaseio.com",
+    "project_id": "ny-dmv-quiz-app",
+    "storage_bucket": "ny-dmv-quiz-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313000284444:android:137bdeaa6348f2f5ec2ad9",
+        "android_client_info": {
+          "package_name": "com.rv.flutter.dmvquizapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313000284444-rletd926c2lcfgvkkeokk45vp9vspkfe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGJirOLX41AS8d3NK6jyRYucJIRVr4bcM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313000284444-rletd926c2lcfgvkkeokk45vp9vspkfe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
