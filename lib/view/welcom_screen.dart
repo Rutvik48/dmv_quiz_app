@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
 import 'quiz_screen.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
+import 'package:dmvquizapp/controller/firebase_connection.dart';
 
 
 class WelcomeScreen extends StatefulWidget {
@@ -50,9 +51,11 @@ class _State extends State<WelcomeScreen> {
               child: RaisedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, QuizScreen.id);
-                  setState(() {
-                    //something
-                  });
+                  //FireStore_Class().addData();
+
+//                  setState(() {
+//                    //something
+//                  });
                 },
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
