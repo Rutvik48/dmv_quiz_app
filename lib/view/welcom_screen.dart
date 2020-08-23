@@ -52,6 +52,9 @@ class _State extends State<WelcomeScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, QuizScreen.id);
                   //FireStore_Class().addData();
+                  //FireStore_Class().onPressed();
+                  FireStore_Class().getQuestion();
+                  print('After onPressed');
 
 //                  setState(() {
 //                    //something
