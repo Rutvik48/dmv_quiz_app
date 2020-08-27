@@ -29,7 +29,8 @@ class _State extends State<WelcomeScreen> {
             Expanded(
                 child: kCustomText(
                   text: kQuizAppName,
-                  textSize: 40.0,
+                  maxFontSize: kAppNameFontSize,
+                  minFontSize: kAppNameFontSize,
                   color: kLogoMatchingColor,
                 ),
             ),
@@ -38,8 +39,8 @@ class _State extends State<WelcomeScreen> {
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: kCustomText(
                       text: kQuizDescription,
-                      textSize: 90.0,
                       color: kLogoMatchingColor,
+                      maxFontSize: 18,
                   ),
                 ),
             ),
@@ -53,8 +54,6 @@ class _State extends State<WelcomeScreen> {
                   Navigator.pushNamed(context, QuizScreen.id);
                   //FireStore_Class().addData();
                   //FireStore_Class().onPressed();
-                  FireStore_Class().getQuestion();
-                  print('After onPressed');
 
 //                  setState(() {
 //                    //something
@@ -63,7 +62,9 @@ class _State extends State<WelcomeScreen> {
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
                   child: kCustomText(
-                    textSize: 30,
+                    //textSize: 30,
+                    minFontSize: kStartButtonTextSize,
+                    maxFontSize: kStartButtonTextSize,
                     text: kStartButtonText,
                   )
                 ),

@@ -9,25 +9,30 @@ import 'package:dmvquizapp/controller/quiz_class.dart' as quiz;
 AutoSizeText kCustomText(
     {
       String text,
-      double textSize,
       Color color,
       TextAlign textAlign=TextAlign.center,
       fontWeight=FontWeight.normal,
+      double maxFontSize=kDefaultMaxFontSize,
+      double minFontSize=kDefaultMinFontSize,
 
     }) {
   return AutoSizeText(text,
       //overflow: TextOverflow.ellipsis,
       maxLines: 5,
       textAlign: textAlign,
+      minFontSize: minFontSize,
+      maxFontSize: maxFontSize,
+      softWrap: true,
+      wrapWords: true,
+      overflow: TextOverflow.visible,
       style: GoogleFonts.lato().copyWith(
-        fontSize: textSize,
         color: color,
         fontWeight: fontWeight,
       ),
   );
 }
 
-Padding kOptionButton({String text, @required Function onPressed}) {
+Padding kOptionButton({@required String text, @required Function onPressed, Color borderColor}) {
   return Padding(
     padding: const EdgeInsets.only(
       left:kQuizScreenLeftRightPadding,
@@ -37,19 +42,18 @@ Padding kOptionButton({String text, @required Function onPressed}) {
     ),
     child: RaisedButton(
       onPressed: onPressed,
-      child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: kCustomText(
-            textSize: 30,
-            text: text,
-          )),
+      child: kCustomText(
+        text: text,
+        maxFontSize: kOptionsMaxFontSize,
+        minFontSize: kOptionsMinFontSize,
+      ),
       color: kLogoBackgroundColor,
       //textColor: kLogoMatchingColor,
       elevation: 8,
       //Creates circular edge on the top left corner of the Start button
       shape: new RoundedRectangleBorder(
         side: BorderSide(
-            color: kLogoMatchingColor,
+            color: borderColor,
             width: 2,
             style: BorderStyle.solid
         ),
@@ -94,7 +98,7 @@ Center kDash (BuildContext context){
         direction: Axis.horizontal,
         length: MediaQuery.of(context).size.width/1.09,
         dashLength: 12,
-        dashColor: Colors.grey
+        dashColor: kDividerLineColor
     ),
   );
 }

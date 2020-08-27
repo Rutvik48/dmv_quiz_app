@@ -1,41 +1,71 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dmvquizapp/controller/firebase_constants.dart';
+import 'package:dmvquizapp/view/quiz_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:dmvquizapp/controller/firebase_connection.dart';
 
 class Quiz {
+  static final Quiz _singleton = Quiz._internal();
+
+  factory Quiz() => _singleton;
+  Quiz._internal();
   String _question;
   String _op1;
   String _op2;
   String _op3;
   String _op4;
   String _ans;
-  static int _quesNumber = 0;
+  static int _questionCounter = 0;
+  int _totalQuestions = 0;
+  Map _quizBank = new Map<int, Map<String, dynamic>>();
+  int _correctAnswerCount = 0;
 
-//  Quiz({String question,
-//      @required String option1,
-//      @required String option2,
-//      @required String option3,
-//      @required String option4}){
-//
-//    this._ques = question;
-//    this._op1 = option1;
-//    this._op2 = option2;
-//    this._op3 = option3;
-//    this._op4 = option4;
-//  }
+  //List holds random number from 0 to 'totalQuestions'
+  //Used to randomize list of questions
+  var questionNumberList;
+
+  var firebaseInstance = FireStore_Class();
 
 
-  static int getQuesNum(){
-    return _quesNumber;
+  int getQuesNum(){
+    return (_questionCounter+1);
   }
 
-  static void increaseQuesNum(){
-    _quesNumber++;
+  int getTotalNumberOfQuestion(){
+    return _totalQuestions;
   }
 
-  String getQuestion(){
-    return _question;
+  bool increaseQuesNum(){
+    if (_questionCounter < _totalQuestions){
+      _questionCounter++;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void increaseCorrectAnswerCount(){
+    _correctAnswerCount++;
+  }
+
+  int getCorrectAnswerCount(){
+    return _correctAnswerCount;
+  }
+
+  String getQuestion()  {
+
+    _question = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_QUESTION];
+
+    return  _question;
   }
 
   List getOptions(){
+    _op1 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION1];
+    _op2 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION2];
+    _op3 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION3];
+    _op4 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION4];
+
     return _randomizeOptions([_op1, _op2, _op3, _op4]);
   }
 
@@ -45,8 +75,30 @@ class Quiz {
   }
 
   bool checkAnswer(String clickedOption) {
+
+    _ans = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_ANSWER];
+    _ans = _ans.replaceAll("\n","").trim();
+
     //Checking if answer pressed by user is same as answer. if yes returns true, else false
     return (clickedOption == _ans);
+  }
+
+  String getAnswer(){
+    return _ans;
+  }
+
+  Future<void> fillQuizBank(String selectedTopic) async{
+    //_quizBank.clear;
+    //TODO: Change selectedTopic in the function call
+    this._quizBank = await firebaseInstance.getQuestion(subCollectionName: 'traffic_controll');
+
+    _totalQuestions = _quizBank.length - 1;
+
+    //Based on total number of question, creating a list 0 to 'totalQuestions'
+    questionNumberList = new List<int>.generate(_totalQuestions, (i) => i);
+
+    //Shuffling the list to randomize list which will be used to pick question
+    questionNumberList.shuffle();
   }
 
 

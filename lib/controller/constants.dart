@@ -9,3 +9,29 @@ const kLogoMatchingColor = Color(0xFFea5723);
 const kLogoMatchingColorWithLowAlpha = Color.fromARGB(256,234, 185, 142);
 const kLogoBackgroundColor = Color(0xFFFFFFFF);
 const kQuizScreenLeftRightPadding = 15.0;
+//Used for AutoSizeText
+///NOTE: When min is specified, it sets font size to minFontSize specified
+const double kDefaultMaxFontSize = 30.0;
+const double kDefaultMinFontSize = 15.0;
+
+
+//Welcome Screen constants
+///NOTE: When min is specified, it sets font size to minFontSize specified
+const double kAppNameFontSize = 45.0;
+const double kStartButtonTextSize = 35.0;
+
+//Quiz Screen constants
+///NOTE: When min is specified, it sets font size to minFontSize specified
+const double kQuestionNumberTextFontSize = 35.0;
+const double kQuestionTextMinFontSize = 25.0;
+const double kQuestionTextMaxFontSize = 30.0;
+const double kOptionsMinFontSize = 16.0;
+const double kOptionsMaxFontSize = 18.0;
+const double kNextButtonFontSize = 22;
+
+const Color kQuestionNumberTextColor = Color(0x44000000);
+const Color kDividerLineColor = kLogoMatchingColor;
+const Color kQuestionTextColor = kLogoMatchingColor;
+const Color kOptionBorderColor = kQuestionNumberTextColor;
+const Color kCorrectAnswerOptionBorderColor = Colors.lightGreen;
+const Color kNextButtonTextColor = Colors.white70;
