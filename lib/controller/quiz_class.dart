@@ -3,13 +3,14 @@ import 'package:dmvquizapp/controller/firebase_constants.dart';
 import 'package:dmvquizapp/view/quiz_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:dmvquizapp/controller/firebase_connection.dart';
+import 'package:dmvquizapp/controller/firestore_class.dart';
 
 class Quiz {
   static final Quiz _singleton = Quiz._internal();
 
   factory Quiz() => _singleton;
   Quiz._internal();
+
   String _question;
   String _op1;
   String _op2;
@@ -25,7 +26,7 @@ class Quiz {
   //Used to randomize list of questions
   var questionNumberList;
 
-  var firebaseInstance = FireStore_Class();
+  var firebaseInstance = FireStoreClass();
 
 
   int getQuesNum(){
@@ -33,12 +34,13 @@ class Quiz {
   }
 
   int getTotalNumberOfQuestion(){
-    return _totalQuestions;
+    return _totalQuestions + 1;
   }
 
   bool increaseQuesNum(){
-    if (_questionCounter < _totalQuestions){
+    if (_questionCounter < (_totalQuestions)){
       _questionCounter++;
+      print("Question Counter: $_questionCounter \nTotal Question: $_totalQuestions");
       return true;
     } else {
       return false;
@@ -95,7 +97,7 @@ class Quiz {
     _totalQuestions = _quizBank.length - 1;
 
     //Based on total number of question, creating a list 0 to 'totalQuestions'
-    questionNumberList = new List<int>.generate(_totalQuestions, (i) => i);
+    questionNumberList = new List<int>.generate(_totalQuestions + 1, (i) => i);
 
     //Shuffling the list to randomize list which will be used to pick question
     questionNumberList.shuffle();

@@ -1,19 +1,23 @@
 import 'package:dmvquizapp/view/quiz_screen.dart';
+import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
 import 'quiz_screen.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
-import 'package:dmvquizapp/controller/firebase_connection.dart';
+import 'package:dmvquizapp/controller/firestore_class.dart';
 
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
+
   @override
   _State createState() => _State();
 }
 
 class _State extends State<WelcomeScreen> {
+  static final firestoreSingleton = FireStoreClass();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,19 +49,15 @@ class _State extends State<WelcomeScreen> {
                 ),
             ),
             //Align widget is used to place child widget where desired
+            ///NEXT button
             Expanded(child: Align(
               //Child will be at bottom right
               alignment: Alignment.bottomRight,
 
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, QuizScreen.id);
-                  //FireStore_Class().addData();
-                  //FireStore_Class().onPressed();
-
-//                  setState(() {
-//                    //something
-//                  });
+                  Navigator.pushNamed(context, TopicScreen.id);
+                  //firestoreSingleton.getTopics();
                 },
                 child: Padding(
                   padding: EdgeInsets.all(20.0),

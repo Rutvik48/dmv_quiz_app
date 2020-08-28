@@ -26,7 +26,7 @@ const double kQuestionNumberTextFontSize = 35.0;
 const double kQuestionTextMinFontSize = 25.0;
 const double kQuestionTextMaxFontSize = 30.0;
 const double kOptionsMinFontSize = 16.0;
-const double kOptionsMaxFontSize = 18.0;
+const double kOptionsMaxFontSize = 25.0;
 const double kNextButtonFontSize = 22;
 
 const Color kQuestionNumberTextColor = Color(0x44000000);

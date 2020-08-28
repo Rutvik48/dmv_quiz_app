@@ -3,15 +3,24 @@ import 'package:flutter/cupertino.dart';
 import 'firebase_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FireStore_Class {
+class FireStoreClass {
   final firestoreInstance = Firestore.instance;
+
+  static final FireStoreClass _singleton = FireStoreClass._internal();
+
+  factory FireStoreClass() => _singleton;
+  FireStoreClass._internal();
 
   Future<Map> getQuestion({@required String subCollectionName}) async {
     print("Get Data is Called");
     QuerySnapshot questions;
     questions = await firestoreInstance
-        .collection(FIREBASE_NY_TRAFFIC_CONTROL_SUB_COLLECTION)
+        .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
+        .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
+        ///TODO: Change this collection string to user selected topic
+        .collection('traffic_control')
         .getDocuments();
+
 
     return changeIntoMap(questions);
   }
@@ -36,26 +45,34 @@ class FireStore_Class {
     return questionBank;
   }
 
-  Future<DocumentSnapshot> getTopics() async {
-    print("Get Data is Called");
-    var documents;
+  Future<Map> getTopics() async {
+
+    DocumentSnapshot documents;
     documents = await firestoreInstance
-        .collection(FIREBASE_MAIN_COLLECTION)
-        .document('ny')
+        .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
+        .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
         .get();
 
-    print('Going into for loop');
-    print(documents['topic']);
-    for (var doc in documents['topic']) {
-      print("THIS IS DOC: $doc");
-    }
-    return documents;
+    return changeTopicsIntoMap(documentSnapshot: documents, topicString: 'topics');
+  }
+
+  Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {
+    Map topicMap = new Map<String, String>();
+
+    int counter = 0;
+    documentSnapshot.data[topicString].forEach((key, value) {
+      topicMap[key] = value;
+    });
+
+    print(topicMap);
+
+    return topicMap;
   }
 
   void addData() {
     final firestoreInstance = Firestore.instance;
     print("Add Data is called!!");
-    firestoreInstance.collection(FIREBASE_MAIN_COLLECTION).add({
+    firestoreInstance.collection(FIREBASE_MAIN_QUIZ_COLLECTION).add({
       "name": "john",
       "age": 50,
       "email": "example@example.com",

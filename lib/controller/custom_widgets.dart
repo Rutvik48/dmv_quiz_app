@@ -32,7 +32,11 @@ AutoSizeText kCustomText(
   );
 }
 
-Padding kOptionButton({@required String text, @required Function onPressed, Color borderColor}) {
+Padding kOptionButton({
+    double fontSize = kOptionsMinFontSize,
+    @required String text,
+    @required Function onPressed,
+    Color borderColor=kOptionBorderColor}) {
   return Padding(
     padding: const EdgeInsets.only(
       left:kQuizScreenLeftRightPadding,
@@ -45,7 +49,7 @@ Padding kOptionButton({@required String text, @required Function onPressed, Colo
       child: kCustomText(
         text: text,
         maxFontSize: kOptionsMaxFontSize,
-        minFontSize: kOptionsMinFontSize,
+        minFontSize: fontSize,
       ),
       color: kLogoBackgroundColor,
       //textColor: kLogoMatchingColor,
