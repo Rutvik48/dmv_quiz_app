@@ -7,9 +7,15 @@ class FireStoreClass {
   final firestoreInstance = Firestore.instance;
 
   static final FireStoreClass _singleton = FireStoreClass._internal();
+  static String selectedTopic = 'traffic_controll';
 
   factory FireStoreClass() => _singleton;
   FireStoreClass._internal();
+
+
+  void setSelectedTopic(String topic) {
+    selectedTopic = topic;
+  }
 
   Future<Map> getQuestion({@required String subCollectionName}) async {
     print("Get Data is Called");
@@ -18,9 +24,10 @@ class FireStoreClass {
         .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
         .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
         ///TODO: Change this collection string to user selected topic
-        .collection('traffic_control')
+        .collection(selectedTopic)
         .getDocuments();
 
+    print(questions);
 
     return changeIntoMap(questions);
   }

@@ -1,4 +1,5 @@
 import 'package:dmvquizapp/view/quiz_screen.dart';
+import 'package:dmvquizapp/view/result_screen.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,10 @@ class _State extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: kLogoBackgroundColor,
-        body: Column(
+    return Scaffold(
+      backgroundColor: kLogoBackgroundColor,
+      body: SafeArea(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
 
@@ -56,8 +57,8 @@ class _State extends State<WelcomeScreen> {
 
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, TopicScreen.id);
-                  //firestoreSingleton.getTopics();
+                  Navigator.pushNamed(context, ResultScreen.id);
+                  //Navigator.pushNamed(context, TopicScreen.id);
                 },
                 child: Padding(
                   padding: EdgeInsets.all(20.0),

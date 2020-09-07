@@ -1,3 +1,4 @@
+import 'package:dmvquizapp/view/result_screen.dart';
 import 'package:flutter/material.dart';
 
 const kStartButtonText = 'Start Quiz!';
@@ -35,3 +36,9 @@ const Color kQuestionTextColor = kLogoMatchingColor;
 const Color kOptionBorderColor = kQuestionNumberTextColor;
 const Color kCorrectAnswerOptionBorderColor = Colors.lightGreen;
 const Color kNextButtonTextColor = Colors.white70;
+
+
+//Result Screen constants
+const String kPlayAgainText = 'Play Again!';
+const String kChooseTopicText = 'Choose Another Topic';
+const String kGoToHomeScreenText = 'Go to Homepage';

@@ -18,17 +18,24 @@ class TopicScreen extends StatefulWidget {
 class _TopicScreenState extends State<TopicScreen> {
   static final firestoreSingleton = FireStoreClass();
   static Map topicList = new Map();
+  static List topicKeys = new List();
+  static List topicValues = new List();
+  //static Iterable<dynamic> topicKeys;// = new List();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     doInitialSetup();
-
   }
 
   void doInitialSetup() async {
     await fillTopicList();
+    //topicKeys = topicList.keys;
+    //print(topicKeys.elementAt(0));
+
+    topicKeys = topicList.keys.toList();
+    
 
     setState(() {
       build(context);
@@ -67,12 +74,17 @@ class _TopicScreenState extends State<TopicScreen> {
     return ListView.builder(
                 itemCount: topicList.length,
                 itemBuilder: (BuildContext context, int index) {
+
+                  String key = topicKeys[index];
+                  String text = topicList[key];
+
                   return SizedBox(
                     height: 80.0,
                     child: kOptionButton(
-                      text: "Index Number: $index",
+                      text: text,
                       fontSize: kOptionsMaxFontSize ,
                       onPressed: (){
+                        firestoreSingleton.setSelectedTopic(key);
                         Navigator.pushNamed(context, QuizScreen.id);
                       },
                     ),
@@ -85,6 +97,7 @@ class _TopicScreenState extends State<TopicScreen> {
     topicList = await firestoreSingleton.getTopics();
 
     print(topicList);
+
   }
 
   AutoSizeText getHeadingTextWidget() {
