@@ -57,8 +57,8 @@ class _State extends State<WelcomeScreen> {
 
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, ResultScreen.id);
-                  //Navigator.pushNamed(context, TopicScreen.id);
+                  //Navigator.pushNamed(context, ResultScreen.id);
+                  Navigator.pushNamed(context, TopicScreen.id);
                 },
                 child: Padding(
                   padding: EdgeInsets.all(20.0),

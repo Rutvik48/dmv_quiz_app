@@ -8,8 +8,17 @@ import 'package:dmvquizapp/controller/firestore_class.dart';
 class Quiz {
   static final Quiz _singleton = Quiz._internal();
 
+  //static final Quiz _singleton = Qui;
+
   factory Quiz() => _singleton;
   Quiz._internal();
+
+  void resetData () {
+    //_singleton = new Quiz();
+    _questionCounter = 0;
+    _correctAnswerCount = 0;
+    _quizBank.clear();
+  }
 
   String _question;
   String _op1;

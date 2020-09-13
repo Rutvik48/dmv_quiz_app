@@ -35,8 +35,6 @@ class _TopicScreenState extends State<TopicScreen> {
     //print(topicKeys.elementAt(0));
 
     topicKeys = topicList.keys.toList();
-    
-
     setState(() {
       build(context);
     });
@@ -83,6 +81,7 @@ class _TopicScreenState extends State<TopicScreen> {
                     child: kOptionButton(
                       text: text,
                       fontSize: kOptionsMaxFontSize ,
+                      width: 2 ,
                       onPressed: (){
                         firestoreSingleton.setSelectedTopic(key);
                         Navigator.pushNamed(context, QuizScreen.id);
