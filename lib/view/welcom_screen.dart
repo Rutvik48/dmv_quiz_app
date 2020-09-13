@@ -51,43 +51,51 @@ class _State extends State<WelcomeScreen> {
             ),
             //Align widget is used to place child widget where desired
             ///NEXT button
-            Expanded(child: Align(
-              //Child will be at bottom right
-              alignment: Alignment.bottomRight,
-
-              child: RaisedButton(
-                onPressed: () {
-                  //Navigator.pushNamed(context, ResultScreen.id);
-                  Navigator.pushNamed(context, TopicScreen.id);
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: kCustomText(
-                    //textSize: 30,
-                    minFontSize: kStartButtonTextSize,
-                    maxFontSize: kStartButtonTextSize,
-                    text: kStartButtonText,
-                  )
-                ),
-                color: kLogoMatchingColor,
-                textColor: Colors.white,
-                elevation: 8,
-                //Creates circular edge on the top left corner of the Start button
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      color: kLogoMatchingColorWithLowAlpha,
-                      width: 5,
-                      style: BorderStyle.solid
-                  ),
-                  borderRadius: new BorderRadius.only(topLeft: Radius.circular(50.0)),
-                ),
-              ),
-            ),
-            )
+            // Expanded(child: Align(
+            //   //Child will be at bottom right
+            //   alignment: Alignment.bottomRight,
+            //
+            //   child: RaisedButton(
+            //     onPressed: () {
+            //       //Navigator.pushNamed(context, ResultScreen.id);
+            //       Navigator.pushNamed(context, TopicScreen.id);
+            //     },
+            //     child: Padding(
+            //       padding: EdgeInsets.all(20.0),
+            //       child: kCustomText(
+            //         //textSize: 30,
+            //         minFontSize: kStartButtonTextSize,
+            //         maxFontSize: kStartButtonTextSize,
+            //         text: kStartButtonText,
+            //       )
+            //     ),
+            //     color: kLogoMatchingColor,
+            //     textColor: Colors.white,
+            //     elevation: 8,
+            //     //Creates circular edge on the top left corner of the Start button
+            //     shape: RoundedRectangleBorder(
+            //       side: BorderSide(
+            //           color: kLogoMatchingColorWithLowAlpha,
+            //           width: 5,
+            //           style: BorderStyle.solid
+            //       ),
+            //       borderRadius: new BorderRadius.only(topLeft: Radius.circular(50.0)),
+            //     ),
+            //   ),
+            // ),
+            // )
 
           ],
         ),
       ),
+
+
+
+       // bottomNavigationBar: BottomNavigationBar(
+       //   items: [
+       //     BottomNavigationBarItem(),
+       //   ],
+       // ),
     );
   }
 }

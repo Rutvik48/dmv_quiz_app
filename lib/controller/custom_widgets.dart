@@ -103,7 +103,8 @@ Center kDash (BuildContext context){
         direction: Axis.horizontal,
         length: MediaQuery.of(context).size.width/1.09,
         dashLength: 12,
-        dashColor: kDividerLineColor
+        dashColor: kDividerLineColor,
+      dashGap: 0.0,
     ),
   );
 }

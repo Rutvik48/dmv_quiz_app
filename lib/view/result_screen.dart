@@ -1,4 +1,5 @@
 import 'package:dmvquizapp/controller/constants.dart';
+import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:dmvquizapp/view/quiz_screen.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:dmvquizapp/view/welcom_screen.dart';
@@ -73,6 +74,8 @@ class _ResultScreenState extends State<ResultScreen> {
           ),
         ),
       ),
+
+      bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/view/welcom_screen.dart';
@@ -11,9 +12,14 @@ void main() {
 class QuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // return MaterialApp(
+    //   home: AppBottomNavigationBar(),
+    // );
+
     return MaterialApp(
-      initialRoute: WelcomeScreen.id,
+      initialRoute: AppBottomNavigationBar.id,
       routes: {
+        AppBottomNavigationBar.id: (context) =>AppBottomNavigationBar(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
         TopicScreen.id: (context) => TopicScreen(),
         QuizScreen.id: (context) => QuizScreen(),
