@@ -98,12 +98,19 @@ CircularCountDownTimer kCircularCountDownTimer() {
 
 Center kDash (BuildContext context){
   return Center(
-    child: Dash(
-        direction: Axis.horizontal,
-        length: MediaQuery.of(context).size.width/1.09,
-        dashLength: 12,
-        dashColor: kDividerLineColor,
-      dashGap: 0.0,
+    child: const Divider(
+      color: kLogoMatchingColor,
+      //height: 20,
+      thickness: 5,
+      indent: 20,
+      endIndent: 20,
     ),
+    // child: Dash(
+    //     direction: Axis.horizontal,
+    //     length: 10.0,//MediaQuery.of(context).size.width,
+    //     dashLength: 12,
+    //     dashColor: kDividerLineColor,
+    //   dashGap: 0.0,
+    // ),
   );
 }

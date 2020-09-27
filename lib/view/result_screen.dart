@@ -61,7 +61,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
               createButton(
                   context: context,
-                  navigatorPath: WelcomeScreen.id,
+                  navigatorPath: AppBottomNavigationBar.idToHomeScreen,
                   buttonText: kGoToHomeScreenText),
               //createButton(context, kGoToHomeScreenText, WelcomeScreen.id),
               SizedBox(
