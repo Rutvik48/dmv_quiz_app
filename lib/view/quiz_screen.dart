@@ -142,7 +142,7 @@ class _QuizScreenState extends State<QuizScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        if (false) timer(),
+        if (kShowTimer) timer(),
 
         SizedBox(
           height: 20.0,
@@ -159,6 +159,14 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
 
         questionWidget(),
+
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 15.0,
+            bottom: 15.0,
+          ),
+          child: kDash(context),
+        ),
 
         optionsWidget(),
 //        SizedBox(
@@ -203,15 +211,19 @@ class _QuizScreenState extends State<QuizScreen> {
           right: kQuizScreenLeftRightPadding,
           left: kQuizScreenLeftRightPadding,
         ),
-        child: Container(
-          color: kLogoBackgroundColor,
-          child: kCustomText(
-              text: question,
-              color: kQuestionTextColor,
-              maxFontSize: kQuestionTextMaxFontSize,
-              minFontSize: kQuestionTextMinFontSize,
-              textAlign: TextAlign.start,
-              fontWeight: FontWeight.bold),
+        child: Center(
+          child: Container(
+            color: kLogoBackgroundColor,
+            child: Center(
+              child: kCustomText(
+                  text: question,
+                  color: kQuestionTextColor,
+                  maxFontSize: kQuestionTextMaxFontSize,
+                  minFontSize: kQuestionTextMinFontSize,
+                  textAlign: TextAlign.center,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
         ),
       ),
     );
@@ -292,7 +304,7 @@ class _QuizScreenState extends State<QuizScreen> {
       maintainState: true,
       visible: optionClicked,
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0),
+        padding: const EdgeInsets.only(top: 20.0),
         child: Align(
           //Child will be at bottom right
           alignment: Alignment.bottomRight,

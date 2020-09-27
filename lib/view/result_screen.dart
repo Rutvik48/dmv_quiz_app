@@ -1,7 +1,6 @@
 import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:dmvquizapp/view/quiz_screen.dart';
-import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:dmvquizapp/view/welcom_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
@@ -53,7 +52,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
               createButton(
                   context: context,
-                  navigatorPath: TopicScreen.id,
+                  navigatorPath: AppBottomNavigationBar.idToTopicScreen,
                   buttonText: kChooseTopicText),
               //createButton(context, kChooseTopicText, TopicScreen.id),
               SizedBox(
@@ -75,7 +74,7 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
       ),
 
-      bottomNavigationBar: AppBottomNavigationBar(),
+      //bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 

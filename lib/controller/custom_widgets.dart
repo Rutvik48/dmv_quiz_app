@@ -4,10 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter_dash/flutter_dash.dart';
-import 'package:dmvquizapp/controller/quiz_class.dart' as quiz;
 
-AutoSizeText kCustomText(
-    {
+Widget kCustomText({
       String text,
       Color color,
       TextAlign textAlign=TextAlign.center,
@@ -51,6 +49,7 @@ Padding kOptionButton({
         text: text,
         maxFontSize: kOptionsMaxFontSize,
         minFontSize: fontSize,
+        fontWeight: FontWeight.bold
       ),
       color: kLogoBackgroundColor,
       //textColor: kLogoMatchingColor,
@@ -62,7 +61,7 @@ Padding kOptionButton({
             width: width,
             style: BorderStyle.solid
         ),
-        borderRadius: new BorderRadius.all(Radius.circular(50.0)),
+        borderRadius: new BorderRadius.all(Radius.circular(kButtonRadius)),
       ),
     ),
   );

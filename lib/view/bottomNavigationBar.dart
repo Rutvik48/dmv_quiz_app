@@ -1,26 +1,24 @@
 import 'package:dmvquizapp/view/about_screen.dart';
-import 'package:dmvquizapp/view/quiz_screen.dart';
-import 'package:dmvquizapp/view/result_screen.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:dmvquizapp/view/user_screen.dart';
 import 'package:dmvquizapp/view/welcom_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
-import 'quiz_screen.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
-import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 
 class AppBottomNavigationBar extends StatefulWidget {
 
-  static const String id = 'bottomNavigationBar';
+  static const String idToHomeScreen = 'bottomNavigationBarHome';
+  static const String idToTopicScreen = 'bottomNavigationBarTopic';
 
-  //final boolean;
-  //AppBottomNavigationBar({@required this.boolean});
 
   static int currentIndex;
-  init({@required int indexNumber}){
+
+  AppBottomNavigationBar ({@required int indexNumber}){
     currentIndex = indexNumber;
   }
 
@@ -29,12 +27,11 @@ class AppBottomNavigationBar extends StatefulWidget {
 }
 
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
-  static int _currentIndex = 0;
-
+  int _currentIndex = AppBottomNavigationBar.currentIndex;
   final List<Widget> _screens = [
     WelcomeScreen(),
-    AboutScreen(),
     UserScreen(),
+    AboutScreen(),
     TopicScreen(),
   ];
 
@@ -47,45 +44,79 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
 
       body: _screens[_currentIndex],
 
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        // backgroundColor: Colors.redAccent,
-        // selectedItemColor: kLogoBackgroundColor,
-        // unselectedItemColor: Colors.black,
+      bottomNavigationBar: BottomNavyBar(
+        selectedIndex: _currentIndex,
 
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: kCustomText(text: 'Home'),
-            backgroundColor: kLogoMatchingColor
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info),
-            title: kCustomText(text: 'About'),
-              backgroundColor: kLogoMatchingColor
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            title: kCustomText(text: 'User'),
-              backgroundColor: kLogoMatchingColor
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.play_arrow),
-            title: kCustomText(text: 'Play'),
-              backgroundColor: kLogoMatchingColor
-          ),
-        ],
-
-        onTap: (index){
-          setState(() {
-            _currentIndex = index;
-          });
+        onItemSelected: (index) {
+          setState(() => _currentIndex = index);
         },
 
+        items: <BottomNavyBarItem>[
+          getBottomNavyBarItem( icon: LineAwesomeIcons.home, iconText: 'Home Page'),
+          getBottomNavyBarItem( icon: LineAwesomeIcons.user, iconText: 'User Info'),
+          getBottomNavyBarItem( icon: LineAwesomeIcons.info, iconText: 'About Us'),
+          getBottomNavyBarItem( icon: LineAwesomeIcons.arrow_right, iconText: 'Play'),
+        ],
       ),
     );
   }
+
+  BottomNavyBarItem getBottomNavyBarItem({@required IconData icon, @required String iconText}) {
+    return BottomNavyBarItem(
+            title: kCustomText(text: iconText, fontWeight: FontWeight.bold, color: kLogoMatchingColor),
+            icon: Icon( icon, color: kLogoMatchingColor, size: 30,)
+        );
+  }
+
+  //Icon getNavigationIcon(Icons icon, ) => Icon(Icons.play_arrow, color: kLogoMatchingColor,);
 }
+
+
+
+
+
+
+
+
+
+
+
+// bottomNavigationBar: BottomNavigationBar(
+//   currentIndex: _currentIndex,
+//   backgroundColor: Colors.redAccent,
+//   selectedItemColor: kLogoBackgroundColor,
+//   unselectedItemColor: Colors.black,
+//
+//   items: [
+//     BottomNavigationBarItem(
+//       icon: Icon(Icons.home),
+//       title: kCustomText(text: 'Home'),
+//       //backgroundColor: kLogoMatchingColor
+//     ),
+//
+//     BottomNavigationBarItem(
+//       icon: Icon(Icons.info),
+//       title: kCustomText(text: 'About'),
+//         //backgroundColor: kLogoMatchingColor
+//     ),
+//
+//     BottomNavigationBarItem(
+//       icon: Icon(Icons.account_circle),
+//       title: kCustomText(text: 'User'),
+//         //backgroundColor: kLogoMatchingColor
+//     ),
+//
+//     BottomNavigationBarItem(
+//       icon: Icon(Icons.play_arrow),
+//       title: kCustomText(text: 'Play'),
+//         //backgroundColor: kLogoMatchingColor
+//     ),
+//   ],
+//
+//   onTap: (index){
+//     setState(() {
+//       _currentIndex = index;
+//     });
+//   },
+//
+// ),

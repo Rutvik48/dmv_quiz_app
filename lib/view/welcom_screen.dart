@@ -1,12 +1,9 @@
-import 'package:dmvquizapp/view/quiz_screen.dart';
-import 'package:dmvquizapp/view/result_screen.dart';
-import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
-import 'quiz_screen.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
 import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 
 class WelcomeScreen extends StatefulWidget {
@@ -16,13 +13,28 @@ class WelcomeScreen extends StatefulWidget {
   _State createState() => _State();
 }
 
-class _State extends State<WelcomeScreen> {
+class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin{
   static final firestoreSingleton = FireStoreClass();
+
+  AnimationController controller;
+  Animation animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(vsync: this,duration: Duration(seconds: 1));
+    animation = ColorTween(begin: Colors.blueGrey, end: Colors.white).animate(controller);
+    controller.forward();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kLogoBackgroundColor,
+      backgroundColor: animation.value,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,14 +43,28 @@ class _State extends State<WelcomeScreen> {
           children: <Widget>[
             //Expended widget takes as much space as possible
             Expanded(child: Image.asset(kWelcomeScreenLogoPath),flex: 2,),
+
             Expanded(
-                child: kCustomText(
-                  text: kQuizAppName,
-                  maxFontSize: kAppNameFontSize,
-                  minFontSize: kAppNameFontSize,
+              child: TypewriterAnimatedTextKit(
+                text: [kQuizAppName],
+                speed: Duration(milliseconds: 300),
+                textAlign: TextAlign.center,
+                textStyle: TextStyle(
+                  fontSize: 45.0,
+                  fontWeight: FontWeight.w900,
                   color: kLogoMatchingColor,
                 ),
+              ),
             ),
+            // Expanded(
+            //     child: kCustomText(
+            //       text: kQuizAppName,
+            //       maxFontSize: kAppNameFontSize,
+            //       minFontSize: kAppNameFontSize,
+            //       color: kLogoMatchingColor,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            // ),
             Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 20, right: 20),

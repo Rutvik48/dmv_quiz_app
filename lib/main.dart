@@ -17,9 +17,10 @@ class QuizApp extends StatelessWidget {
     // );
 
     return MaterialApp(
-      initialRoute: AppBottomNavigationBar.id,
+      initialRoute: AppBottomNavigationBar.idToHomeScreen,
       routes: {
-        AppBottomNavigationBar.id: (context) =>AppBottomNavigationBar(),
+        AppBottomNavigationBar.idToHomeScreen: (context) =>AppBottomNavigationBar(indexNumber: 0),
+        AppBottomNavigationBar.idToTopicScreen: (context) =>AppBottomNavigationBar(indexNumber: 3),
         WelcomeScreen.id: (context) => WelcomeScreen(),
         TopicScreen.id: (context) => TopicScreen(),
         QuizScreen.id: (context) => QuizScreen(),
