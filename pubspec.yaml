@@ -37,6 +37,7 @@ dependencies:
   bottom_navy_bar: ^5.5.0
   line_awesome_icons: ^1.0.4+2
   animated_text_kit: ^2.2.0
+  kumi_popup_window: ^1.0.10
 
 
 dev_dependencies:

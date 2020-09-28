@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
 //Collections
-const FIREBASE_MAIN_QUIZ_COLLECTION = "question_bank";
-//const FIREBASE_NY_TRAFFIC_CONTROL_SUB_COLLECTION = '$FIREBASE_MAIN_COLLECTION/ny/traffic_control';
-const FIREBASE_MAIN_QUIZ_DOCUMENT = 'ny';
-const FIREBASE_PATH_TO_TOPICS = '$FIREBASE_MAIN_QUIZ_COLLECTION/ny/topics';
+//const FIREBASE_MAIN_QUIZ_COLLECTION = "question_bank";
+
+//const FIREBASE_MAIN_QUIZ_DOCUMENT = 'ny';
+
+//changes made on 9/27/2020
+const FIREBASE_MAIN_QUIZ_COLLECTION = "question_main_collection";
+const FIREBASE_MAIN_QUIZ_DOCUMENT = 'new_york';
+const FIREBASE_QUIZ_MAIN_TOPIC_ARRAY = 'main_topic';
+const FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT = 'sub-topics';
+
+//const FIREBASE_PATH_TO_TOPICS = '$FIREBASE_MAIN_QUIZ_COLLECTION/ny/topics';
 
 
 //Documents Keys

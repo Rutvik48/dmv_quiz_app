@@ -6,6 +6,7 @@ import 'package:dmvquizapp/controller/constants.dart';
 import 'quiz_screen.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
 import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:kumi_popup_window/kumi_popup_window.dart';
 
 class TopicScreen extends StatefulWidget {
   @override
@@ -17,8 +18,10 @@ class TopicScreen extends StatefulWidget {
 
 class _TopicScreenState extends State<TopicScreen> {
   static final firestoreSingleton = FireStoreClass();
-  static Map topicList = new Map();
-  static List topicKeys = new List();
+  static Map mainTopicList = new Map();
+  static List mainTopicKeys = new List();
+  static Map subTopicList = new Map();
+  static List subTopicKeys = new List();
   static List topicValues = new List();
   //static Iterable<dynamic> topicKeys;// = new List();
 
@@ -34,7 +37,7 @@ class _TopicScreenState extends State<TopicScreen> {
     //topicKeys = topicList.keys;
     //print(topicKeys.elementAt(0));
 
-    topicKeys = topicList.keys.toList();
+    mainTopicKeys = mainTopicList.keys.toList();
     setState(() {
       build(context);
     });
@@ -70,11 +73,11 @@ class _TopicScreenState extends State<TopicScreen> {
   ListView getTopicListWidget() {
 
     return ListView.builder(
-                itemCount: topicList.length,
+                itemCount: mainTopicList.length,
                 itemBuilder: (BuildContext context, int index) {
 
-                  String key = topicKeys[index];
-                  String text = topicList[key];
+                  String key = mainTopicKeys[index];
+                  String text = mainTopicList[key];
 
                   return SizedBox(
                     height: 80.0,
@@ -84,7 +87,57 @@ class _TopicScreenState extends State<TopicScreen> {
                       width: 2 ,
                       onPressed: (){
                         firestoreSingleton.setSelectedTopic(key);
-                        Navigator.pushNamed(context, QuizScreen.id);
+                        //print('This is SubTopics: ${firestoreSingleton.getSubTopics(key)}');
+                        //print('This is Key: $key') ;
+                        //both sowPopupWindow and createPopupWindow
+                        showPopupWindow(
+                          context,
+                          gravity: KumiPopupGravity.center,
+                          bgColor: Colors.grey.withOpacity(0.5),
+                          clickOutDismiss: true,
+                          clickBackDismiss: true,
+                          customAnimation: false,
+                          customPop: false,
+                          customPage: false,
+                          //targetRenderBox: (btnKey.currentContext.findRenderObject() as RenderBox),
+                          //childSize: null,
+                          underStatusBar: false,
+                          underAppBar: true,
+                          //offsetX: 0,
+                          //offsetY: 0,
+                          duration: Duration(milliseconds: 200),
+                          onShowStart: (pop) {
+                            print("showStart");
+                          },
+                          onShowFinish: (pop) {
+                            print("showFinish");
+                          },
+                          onDismissStart: (pop) {
+                            print("dismissStart");
+                          },
+                          onDismissFinish: (pop) {
+                            print("dismissFinish");
+                          },
+                          onClickOut: (pop){
+                            print("onClickOut");
+                          },
+                          onClickBack: (pop){
+                            print("onClickBack");
+                          },
+                          childFun: (pop) {
+                            return Container(
+                              key: GlobalKey(),
+                              padding: EdgeInsets.all(10),
+                              height: MediaQuery.of(context).size.height * 0.80,
+                              width: MediaQuery.of(context).size.width * 0.80,
+                              //color: ,
+                              child: Expanded(
+                                child: getSubTopicListWidget(selectedMainTopic: key),
+                              ),
+                            );
+                          },
+                        );
+                        //Navigator.pushNamed(context, QuizScreen.id);
                       },
                     ),
                   );
@@ -92,10 +145,51 @@ class _TopicScreenState extends State<TopicScreen> {
             );
   }
 
-  Future<void> fillTopicList () async {
-    topicList = await firestoreSingleton.getTopics();
+  Widget getSubTopicListWidget({@required String selectedMainTopic }) {
 
-    print(topicList);
+    fillSubTopicList(selectedMainTopic: selectedMainTopic);
+    return ListView.builder(
+        itemCount: subTopicList.length,
+        itemBuilder: (BuildContext context, int index) {
+
+          String key = subTopicKeys[index];
+          String text = subTopicList[key];
+
+          return SizedBox(
+            height: 80.0,
+            child: kOptionButton(
+              text: text,
+              fontSize: kOptionsMaxFontSize ,
+              width: 2 ,
+              onPressed: (){
+                firestoreSingleton.setSelectedTopic(key);
+                //print('This is SubTopics: ${firestoreSingleton.getSubTopics(key)}');
+                //print('This is Key: $key') ;
+                //both sowPopupWindow and createPopupWindow
+                //Navigator.pushNamed(context, QuizScreen.id);
+              },
+            ),
+          );
+        }
+    );
+  }
+
+  Future<void> fillTopicList () async {
+    mainTopicList = await firestoreSingleton.getTopics();
+
+    print(mainTopicList);
+
+  }
+
+  Future<void> fillSubTopicList ({@required String selectedMainTopic}) async {
+    subTopicList = await firestoreSingleton.getSubTopics(selectedMainTopic);
+
+    print(subTopicList);
+
+    subTopicKeys = subTopicList.keys.toList();
+    setState(() {
+      build(context);
+    });
 
   }
 

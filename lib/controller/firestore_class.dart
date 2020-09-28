@@ -52,6 +52,31 @@ class FireStoreClass {
     return questionBank;
   }
 
+  // Future<Map> getTopics() async {
+  //
+  //   DocumentSnapshot documents;
+  //   documents = await firestoreInstance
+  //       .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
+  //       .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
+  //       .get();
+  //
+  //   return changeTopicsIntoMap(documentSnapshot: documents, topicString: 'topics');
+  // }
+  //
+  // Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {
+  //   Map topicMap = new Map<String, String>();
+  //
+  //   int counter = 0;
+  //   documentSnapshot.data[topicString].forEach((key, value) {
+  //     topicMap[key] = value;
+  //   });
+  //
+  //   print(topicMap);
+  //
+  //   return topicMap;
+  // }
+
+
   Future<Map> getTopics() async {
 
     DocumentSnapshot documents;
@@ -60,12 +85,29 @@ class FireStoreClass {
         .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
         .get();
 
-    return changeTopicsIntoMap(documentSnapshot: documents, topicString: 'topics');
+    return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_MAIN_TOPIC_ARRAY);
+  }
+
+  Future<Map> getSubTopics(String selectedMainTopic) async {
+
+    DocumentSnapshot documents;
+    print (selectedMainTopic);
+    // documents = await firestoreInstance
+    //     .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
+    //     .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
+    //     .collection(selectedMainTopic)
+    //     .document(FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT)
+    //     .get();
+
+    documents = await firestoreInstance.collection('question_main_collection/new_york/1').document('sub-topics').get();
+
+    return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT);
   }
 
   Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {
     Map topicMap = new Map<String, String>();
 
+    print(documentSnapshot.data);
     int counter = 0;
     documentSnapshot.data[topicString].forEach((key, value) {
       topicMap[key] = value;
