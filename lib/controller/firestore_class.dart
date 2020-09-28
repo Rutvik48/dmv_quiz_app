@@ -92,16 +92,31 @@ class FireStoreClass {
 
     DocumentSnapshot documents;
     print (selectedMainTopic);
-    // documents = await firestoreInstance
+    documents = await firestoreInstance
+        .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
+        .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
+        .collection(selectedTopic)
+        .document(FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT)
+        .get();
+
+    // var test = await firestoreInstance.collection(FIREBASE_MAIN_QUIZ_COLLECTION).document(FIREBASE_MAIN_QUIZ_DOCUMENT).collection(selectedTopic).getDocuments();
+    // print(test);
+    //
+    // var test2 = await firestoreInstance
     //     .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
     //     .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
-    //     .collection(selectedMainTopic)
+    //     .collection(selectedTopic)
     //     .document(FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT)
     //     .get();
+    // print(test2);
 
-    documents = await firestoreInstance.collection('question_main_collection/new_york/1').document('sub-topics').get();
+    // documents = await firestoreInstance.collection('question_main_collection/new_york/1').document('sub-topics').get().whenComplete((){
+    //   print(documents);
+    //   return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT);
+    // });
 
     return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT);
+    print(documents);
   }
 
   Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {

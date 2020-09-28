@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dmvquizapp/view/quiz_screen.dart';
+import 'package:dmvquizapp/view/sub_topic_popup_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
@@ -125,17 +126,29 @@ class _TopicScreenState extends State<TopicScreen> {
                             print("onClickBack");
                           },
                           childFun: (pop) {
+                            //return SubTopicPopupWindow(selectedMainTopic: '1',);
                             return Container(
                               key: GlobalKey(),
                               padding: EdgeInsets.all(10),
                               height: MediaQuery.of(context).size.height * 0.80,
                               width: MediaQuery.of(context).size.width * 0.80,
-                              //color: ,
-                              child: Expanded(
-                                child: getSubTopicListWidget(selectedMainTopic: key),
-                              ),
+                              color: Colors.yellow,
+                              //child: getTopicListWidget(),
+                              child: SubTopicPopupWindow(selectedMainTopic: '1',),
                             );
                           },
+                          // childFun: (pop) {
+                          //   return SubTopicPopupWindow(selectedMainTopic: '1',);
+                          //   // return Container(
+                          //   //   key: GlobalKey(),
+                          //   //   padding: EdgeInsets.all(10),
+                          //   //   height: MediaQuery.of(context).size.height * 0.80,
+                          //   //   width: MediaQuery.of(context).size.width * 0.80,
+                          //   //   //color: ,
+                          //   //   //child: getTopicListWidget(),
+                          //   //   child: getSubTopicListWidget(selectedMainTopic: key),
+                          //   // );
+                          // },
                         );
                         //Navigator.pushNamed(context, QuizScreen.id);
                       },
@@ -147,31 +160,48 @@ class _TopicScreenState extends State<TopicScreen> {
 
   Widget getSubTopicListWidget({@required String selectedMainTopic }) {
 
-    fillSubTopicList(selectedMainTopic: selectedMainTopic);
+    //fillSubTopicList(selectedMainTopic: selectedMainTopic);
+    test();
+    return fillListView();
+  }
+
+  ListView fillListView() {
     return ListView.builder(
-        itemCount: subTopicList.length,
-        itemBuilder: (BuildContext context, int index) {
 
-          String key = subTopicKeys[index];
-          String text = subTopicList[key];
+      itemCount: subTopicList.length,
+      itemBuilder: (BuildContext context, int index) {
 
-          return SizedBox(
-            height: 80.0,
-            child: kOptionButton(
-              text: text,
-              fontSize: kOptionsMaxFontSize ,
-              width: 2 ,
-              onPressed: (){
-                firestoreSingleton.setSelectedTopic(key);
-                //print('This is SubTopics: ${firestoreSingleton.getSubTopics(key)}');
-                //print('This is Key: $key') ;
-                //both sowPopupWindow and createPopupWindow
-                //Navigator.pushNamed(context, QuizScreen.id);
-              },
-            ),
-          );
-        }
-    );
+        String key = subTopicKeys[index];
+        String text = subTopicList[key];
+
+        return Container(
+          color: Colors.red,
+          child: SizedBox(
+            height: 500.0,
+              width: 500.0,
+
+          ),
+        );
+        // return SizedBox(
+        //   height: 80.0,
+        //   child: Container(
+        //     color: Colors.red,
+        //     child: kOptionButton(
+        //       text: text,
+        //       fontSize: kOptionsMaxFontSize ,
+        //       width: 2 ,
+        //       onPressed: (){
+        //         firestoreSingleton.setSelectedTopic(key);
+        //         //print('This is SubTopics: ${firestoreSingleton.getSubTopics(key)}');
+        //         //print('This is Key: $key') ;
+        //         //both sowPopupWindow and createPopupWindow
+        //         //Navigator.pushNamed(context, QuizScreen.id);
+        //       },
+        //     ),
+        //   ),
+        // );
+      }
+  );
   }
 
   Future<void> fillTopicList () async {
@@ -181,13 +211,25 @@ class _TopicScreenState extends State<TopicScreen> {
 
   }
 
-  Future<void> fillSubTopicList ({@required String selectedMainTopic}) async {
-    subTopicList = await firestoreSingleton.getSubTopics(selectedMainTopic);
+  void test (){
+    fillSubTopicList(selectedMainTopic: '1');
+    print('test ends');
+  }
 
-    print(subTopicList);
+  Future<void> fillSubTopicList ({@required String selectedMainTopic}) async {
+    subTopicList = await firestoreSingleton.getSubTopics(selectedMainTopic)
+        .whenComplete(() => {
+      subTopicKeys = subTopicList.keys.toList(),
+      print('Inside: $subTopicList')
+
+    });
+
+    print('Outside: $subTopicList');
 
     subTopicKeys = subTopicList.keys.toList();
     setState(() {
+      subTopicKeys = subTopicList.keys.toList();
+      fillListView();
       build(context);
     });
 
