@@ -91,7 +91,8 @@ class FireStoreClass {
   Future<Map> getSubTopics(String selectedMainTopic) async {
 
     DocumentSnapshot documents;
-    print (selectedMainTopic);
+    print ('Selected Main Topic in getSubTopics $selectedMainTopic');
+    print ('Selected Topic in getSubTopics $selectedTopic');
     documents = await firestoreInstance
         .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
         .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
@@ -115,23 +116,56 @@ class FireStoreClass {
     //   return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT);
     // });
 
-    return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT);
+    return changeSubTopicsIntoMap(documentSnapshot: documents);
     print(documents);
   }
 
-  Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {
+
+  Map createMap({@required DocumentSnapshot documentSnapshot, @required String topicString, trueForTopic=false}) {
     Map topicMap = new Map<String, String>();
 
     print(documentSnapshot.data);
     int counter = 0;
-    documentSnapshot.data[topicString].forEach((key, value) {
-      topicMap[key] = value;
-    });
-
-    print(topicMap);
-
+    if (trueForTopic){
+      documentSnapshot.data[topicString].forEach((key, value) {
+        topicMap[key] = value;
+      });
+    } else {
+      documentSnapshot.data.forEach((key, value) {
+        topicMap[key] = value;
+      });
+    }
     return topicMap;
   }
+
+  Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {
+
+    return createMap(documentSnapshot: documentSnapshot, topicString: FIREBASE_QUIZ_MAIN_TOPIC_ARRAY, trueForTopic: true);
+//    Map topicMap = new Map<String, String>();
+//
+//    print(documentSnapshot.data);
+//    int counter = 0;
+//    documentSnapshot.data[topicString].forEach((key, value) {
+//      topicMap[key] = value;
+//    });
+//    return topicMap;
+  }
+
+  Map changeSubTopicsIntoMap({@required DocumentSnapshot documentSnapshot}) {
+
+    return createMap(documentSnapshot: documentSnapshot, topicString: 'N/A');
+//    Map topicMap = new Map<String, String>();
+//
+//    print(documentSnapshot.data);
+//    int counter = 0;
+//    documentSnapshot.data.forEach((key, value) {
+//      topicMap[key] = value;
+//    });
+//
+//    return topicMap;
+  }
+
+
 
   void addData() {
     final firestoreInstance = Firestore.instance;
