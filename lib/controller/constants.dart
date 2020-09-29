@@ -37,6 +37,7 @@ const Color kDividerLineColor = kLogoMatchingColor;
 const Color kQuestionTextColor = kLogoMatchingColor;
 const Color kOptionBorderColor = kQuestionNumberTextColor;
 const Color kCorrectAnswerOptionBorderColor = Colors.lightGreen;
+const Color kWrongAnswerOptionBorderColor = Colors.deepOrange;
 const Color kNextButtonTextColor = Colors.white70;
 
 

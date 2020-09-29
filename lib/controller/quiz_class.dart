@@ -6,12 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:dmvquizapp/controller/firestore_class.dart';
 
 class Quiz {
-
-
   static final Quiz _singleton = Quiz._internal();
-  factory Quiz() => _singleton;
-  Quiz._internal();
 
+  factory Quiz() => _singleton;
+
+  Quiz._internal();
 
   String _question;
   String _op1;
@@ -30,78 +29,83 @@ class Quiz {
 
   var firebaseInstance = FireStoreClass();
 
-
-  int getQuesNum(){
-    return (_questionCounter+1);
+  int getQuesNum() {
+    return (_questionCounter + 1);
   }
 
-  int getTotalNumberOfQuestion(){
+  int getTotalNumberOfQuestion() {
     return _totalQuestions + 1;
   }
 
-  void resetData () {
+  void resetData() {
     //_singleton = new Quiz();
     _questionCounter = 0;
     _correctAnswerCount = 0;
     _quizBank.clear();
   }
 
-  bool increaseQuesNum(){
-    if (_questionCounter < (_totalQuestions)){
+  bool increaseQuesNum() {
+    if (_questionCounter < (_totalQuestions)) {
       _questionCounter++;
-      print("Question Counter: $_questionCounter \nTotal Question: $_totalQuestions");
+      print(
+          "Question Counter: $_questionCounter \nTotal Question: $_totalQuestions");
       return true;
     } else {
       return false;
     }
   }
 
-  void increaseCorrectAnswerCount(){
+  void increaseCorrectAnswerCount() {
     _correctAnswerCount++;
   }
 
-  int getCorrectAnswerCount(){
+  int getCorrectAnswerCount() {
     return _correctAnswerCount;
   }
 
-  String getQuestion()  {
+  String getQuestion() {
+    _question = this._quizBank[questionNumberList[_questionCounter]]
+        [FIREBASE_FIELD_QUESTION];
 
-    _question = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_QUESTION];
-
-    return  _question;
+    return _question;
   }
 
-  List getOptions(){
-    _op1 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION1];
-    _op2 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION2];
-    _op3 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION3];
-    _op4 = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_OPTION4];
+  List getOptions() {
+    _op1 = this._quizBank[questionNumberList[_questionCounter]]
+        [FIREBASE_FIELD_OPTION1];
+    _op2 = this._quizBank[questionNumberList[_questionCounter]]
+        [FIREBASE_FIELD_OPTION2];
+    _op3 = this._quizBank[questionNumberList[_questionCounter]]
+        [FIREBASE_FIELD_OPTION3];
+    _op4 = this._quizBank[questionNumberList[_questionCounter]]
+        [FIREBASE_FIELD_OPTION4];
 
     return _randomizeOptions([_op1, _op2, _op3, _op4]);
   }
 
-  List<dynamic> _randomizeOptions(List list){
+  List<dynamic> _randomizeOptions(List list) {
     list.shuffle();
     return list;
   }
 
   bool checkAnswer(String clickedOption) {
-
-    _ans = this._quizBank[questionNumberList[_questionCounter]][FIREBASE_FIELD_ANSWER];
-    _ans = _ans.replaceAll("\n","").trim();
+    _ans = this._quizBank[questionNumberList[_questionCounter]]
+        [FIREBASE_FIELD_ANSWER];
+    _ans = _ans.replaceAll("\n", "").trim();
 
     //Checking if answer pressed by user is same as answer. if yes returns true, else false
     return (clickedOption == _ans);
   }
 
-  String getAnswer(){
+  String getAnswer() {
     return _ans;
   }
 
-  Future<void> fillQuizBank(String selectedTopic) async{
+  Future<void> fillQuizBank(String selectedTopic) async {
     //_quizBank.clear;
     //TODO: Change selectedTopic in the function call
-    this._quizBank = await firebaseInstance.getQuestion(subCollectionName: 'traffic_controll');
+    this._quizBank = await firebaseInstance.getQuestion(
+        subCollectionName: 'traffic_controll');
 
     _totalQuestions = _quizBank.length - 1;
 
@@ -111,6 +115,4 @@ class Quiz {
     //Shuffling the list to randomize list which will be used to pick question
     questionNumberList.shuffle();
   }
-
-
 }

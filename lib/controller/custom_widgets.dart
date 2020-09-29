@@ -34,7 +34,7 @@ Padding kOptionButton({
     double fontSize = kOptionsMinFontSize,
     @required String text,
     @required Function onPressed,
-    double width=5,
+    double borderWidth=5,
     Color borderColor=kOptionBorderColor}) {
   return Padding(
     padding: const EdgeInsets.only(
@@ -58,7 +58,7 @@ Padding kOptionButton({
       shape: new RoundedRectangleBorder(
         side: BorderSide(
             color: borderColor,
-            width: width,
+            width: borderWidth,
             style: BorderStyle.solid
         ),
         borderRadius: new BorderRadius.all(Radius.circular(kButtonRadius)),

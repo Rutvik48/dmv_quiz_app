@@ -26,6 +26,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int totalNumberOfQuestions = 0;
   Color defaultOptionBorderColor = kOptionBorderColor;
   Color correctAnswerBorderColor = kCorrectAnswerOptionBorderColor;
+  Color wrongAnswerBorderColor = kWrongAnswerOptionBorderColor;
   Color option1BorderColor= kOptionBorderColor;
   Color option2BorderColor=kOptionBorderColor;
   Color option3BorderColor=kOptionBorderColor;
@@ -67,7 +68,7 @@ class _QuizScreenState extends State<QuizScreen> {
     option4BorderColor = defaultOptionBorderColor;
   }
 
-  void checkAnswer({@required String clickedOption}) {
+  void checkAnswer({@required String clickedOption, int optionNumber}) {
 
     bool result = quizSingleton.checkAnswer(clickedOption);
     print("Check Answer: $result");
@@ -84,6 +85,21 @@ class _QuizScreenState extends State<QuizScreen> {
         //Selected answer is wrong
         //borderColorTest = Colors.yellowAccent;
 
+        switch (optionNumber){
+          case 1:
+            option1BorderColor = wrongAnswerBorderColor;
+            break;
+          case 2:
+            option2BorderColor = wrongAnswerBorderColor;
+            break;
+          case 3:
+            option3BorderColor = wrongAnswerBorderColor;
+            break;
+          case 4:
+            option4BorderColor = wrongAnswerBorderColor;
+            break;
+        }
+
       }
 
       switch (correctAnswerOption){
@@ -97,7 +113,7 @@ class _QuizScreenState extends State<QuizScreen> {
           option3BorderColor = correctAnswerBorderColor;
           break;
         case 4:
-          option1BorderColor = correctAnswerBorderColor;
+          option4BorderColor = correctAnswerBorderColor;
           break;
       }
 
@@ -261,7 +277,8 @@ class _QuizScreenState extends State<QuizScreen> {
         optionText: option1,
         borderColor: option1BorderColor,
         onPressed: () {
-            checkAnswer(clickedOption: option1,);
+            checkAnswer(clickedOption: option1,optionNumber: 1);
+            int optionNumber = 1;
         });
   }
   Widget getOption2 ({Color borderColor=kLogoMatchingColor}){
@@ -269,7 +286,7 @@ class _QuizScreenState extends State<QuizScreen> {
         optionText: option2,
         borderColor: option2BorderColor,
         onPressed: () {
-            checkAnswer(clickedOption: option2,);
+            checkAnswer(clickedOption: option2,optionNumber: 2);
         });
   }
   Widget getOption3 ({Color borderColor=kLogoMatchingColor}){
@@ -277,7 +294,7 @@ class _QuizScreenState extends State<QuizScreen> {
         optionText: option3,
         borderColor: option3BorderColor,
         onPressed: () {
-            checkAnswer(clickedOption: option3,);
+            checkAnswer(clickedOption: option3,optionNumber: 3);
         });
   }
   Widget getOption4 ({Color borderColor=kLogoMatchingColor}){
@@ -285,7 +302,7 @@ class _QuizScreenState extends State<QuizScreen> {
         optionText: option4,
         borderColor: option4BorderColor,
         onPressed: () {
-            checkAnswer(clickedOption: option4,);
+            checkAnswer(clickedOption: option4,optionNumber: 4);
         });
   }
 

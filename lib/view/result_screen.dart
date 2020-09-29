@@ -87,7 +87,7 @@ class _ResultScreenState extends State<ResultScreen> {
       child: kOptionButton(
           text: buttonText,
           fontSize: 20.0,
-          width: 2,
+          borderWidth: 2,
           onPressed: () {
             setState(() {
               Navigator.pushNamed(context, navigatorPath);

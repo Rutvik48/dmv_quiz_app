@@ -48,25 +48,25 @@ class _TopicScreenState extends State<TopicScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            getHeadingTextWidget(),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-              child: kDash(context),
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              getHeadingTextWidget(),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                child: kDash(context),
+              ),
 
-            Expanded(
-              child: getTopicListWidget(),
-            ),
+              Expanded(
+                child: getTopicListWidget(),
+              ),
 
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 30.0),
-              child: kDash(context),
-            ),
-          ],
-        )
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0, bottom: 30.0),
+                child: kDash(context),
+              ),
+            ],
+          )
       ),
     );
   }
@@ -74,89 +74,78 @@ class _TopicScreenState extends State<TopicScreen> {
   ListView getTopicListWidget() {
 
     return ListView.builder(
-                itemCount: mainTopicList.length,
-                itemBuilder: (BuildContext context, int index) {
 
-                  String key = mainTopicKeys[index];
-                  String text = mainTopicList[key];
+        itemCount: mainTopicList.length,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
 
-                  return SizedBox(
-                    height: 80.0,
-                    child: kOptionButton(
-                      text: text,
-                      fontSize: kOptionsMaxFontSize ,
-                      width: 2 ,
-                      onPressed: (){
-                        print('This is key: $key');
-                        firestoreSingleton.setSelectedTopic(key);
-                        //print('This is SubTopics: ${firestoreSingleton.getSubTopics(key)}');
-                        //print('This is Key: $key') ;
-                        //both sowPopupWindow and createPopupWindow
-                        showPopupWindow(
-                          context,
-                          gravity: KumiPopupGravity.center,
-                          bgColor: Colors.grey.withOpacity(0.5),
-                          clickOutDismiss: true,
-                          clickBackDismiss: true,
-                          customAnimation: false,
-                          customPop: false,
-                          customPage: false,
-                          //targetRenderBox: (btnKey.currentContext.findRenderObject() as RenderBox),
-                          //childSize: null,
-                          underStatusBar: false,
-                          underAppBar: true,
-                          //offsetX: 0,
-                          //offsetY: 0,
-                          //duration: Duration(milliseconds: 200),
-                          onShowStart: (pop) {
-                            print("showStart");
-                          },
-                          onShowFinish: (pop) {
-                            print("showFinish");
-                          },
-                          onDismissStart: (pop) {
-                            print("dismissStart");
-                          },
-                          onDismissFinish: (pop) {
-                            print("dismissFinish");
-                          },
-                          onClickOut: (pop){
-                            print("onClickOut");
-                          },
-                          onClickBack: (pop){
-                            print("onClickBack");
-                          },
-                          childFun: (pop) {
-                            //return SubTopicPopupWindow(selectedMainTopic: '1',);
-                            return Container(
-                              key: GlobalKey(),
-                              padding: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height * 0.50,
-                              width: MediaQuery.of(context).size.width * 0.80,
-                              //color: Colors.yellow,
-                              //child: getTopicListWidget(),
-                              child: SubTopicPopupWindow(selectedMainTopic: key,),
-                            );
-                          },
-                          // childFun: (pop) {
-                          //   return SubTopicPopupWindow(selectedMainTopic: '1',);
-                          //   // return Container(
-                          //   //   key: GlobalKey(),
-                          //   //   padding: EdgeInsets.all(10),
-                          //   //   height: MediaQuery.of(context).size.height * 0.80,
-                          //   //   width: MediaQuery.of(context).size.width * 0.80,
-                          //   //   //color: ,
-                          //   //   //child: getTopicListWidget(),
-                          //   //   child: getSubTopicListWidget(selectedMainTopic: key),
-                          //   // );
-                          // },
-                        );
-                        //Navigator.pushNamed(context, QuizScreen.id);
-                      },
-                    ),
-                  );
-                }
-            );
+          String key = mainTopicKeys[index];
+          String text = mainTopicList[key];
+
+          return SizedBox(
+            height: 80.0,
+            child: kOptionButton(
+              text: text,
+              fontSize: kOptionsMaxFontSize ,
+              borderWidth: 2 ,
+              onPressed: (){
+                print('This is key: $key');
+                firestoreSingleton.setSelectedTopic(key);
+
+                //both sowPopupWindow and createPopupWindow
+                showPopupWindow(
+                  context,
+                  //gravity: KumiPopupGravity.center,
+                  //bgColor: Colors.transparent,
+                  clickOutDismiss: true,
+                  clickBackDismiss: true,
+                  customAnimation: false,
+                  customPop: false,
+                  customPage: false,
+                  //targetRenderBox: (btnKey.currentContext.findRenderObject() as RenderBox),
+                  //childSize: null,
+                  underStatusBar: false,
+                  underAppBar: true,
+                  //offsetX: 0,
+                  //offsetY: 0,
+                  //duration: Duration(milliseconds: 200),
+                  onShowStart: (pop) {
+                    print("showStart");
+                  },
+                  onShowFinish: (pop) {
+                    print("showFinish");
+                  },
+                  onDismissStart: (pop) {
+                    print("dismissStart");
+                  },
+                  onDismissFinish: (pop) {
+                    print("dismissFinish");
+                  },
+                  onClickOut: (pop){
+                    print("onClickOut");
+                  },
+                  onClickBack: (pop){
+                    print("onClickBack");
+                  },
+                  childFun: (pop) {
+                    //return SubTopicPopupWindow(selectedMainTopic: '1',);
+                    return Container(
+                      key: GlobalKey(),
+                      padding: EdgeInsets.all(10),
+                      height: MediaQuery.of(context).size.height * 0.40,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      color: Colors.grey.withOpacity(0.9),
+                      //child: getTopicListWidget(),
+                      child: SubTopicPopupWindow(selectedMainTopic: key,),
+                    );
+                  },
+                );
+                //Navigator.pushNamed(context, QuizScreen.id);
+              },
+            ),
+          );
+        }
+    );
   }
 
   Future<void> fillTopicList () async {
@@ -168,11 +157,11 @@ class _TopicScreenState extends State<TopicScreen> {
 
   AutoSizeText getHeadingTextWidget() {
     return kCustomText(
-            minFontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            color: kLogoMatchingColor,
-            text: 'Chose a Topic',
-            textAlign: TextAlign.center,
-          );
+      minFontSize: 30.0,
+      fontWeight: FontWeight.bold,
+      color: kLogoMatchingColor,
+      text: 'Chose a Topic',
+      textAlign: TextAlign.center,
+    );
   }
 }
