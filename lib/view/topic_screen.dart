@@ -13,7 +13,6 @@ class TopicScreen extends StatefulWidget {
   @override
   _TopicScreenState createState() => _TopicScreenState();
 
-
   static const String id = 'topic_screen';
 }
 
@@ -21,10 +20,6 @@ class _TopicScreenState extends State<TopicScreen> {
   static final firestoreSingleton = FireStoreClass();
   static Map mainTopicList = new Map();
   static List mainTopicKeys = new List();
-  static Map subTopicList = new Map();
-  static List subTopicKeys = new List();
-  static List topicValues = new List();
-  //static Iterable<dynamic> topicKeys;// = new List();
 
   @override
   void initState() {
@@ -35,12 +30,10 @@ class _TopicScreenState extends State<TopicScreen> {
 
   void doInitialSetup() async {
     await fillTopicList();
-    //topicKeys = topicList.keys;
-    //print(topicKeys.elementAt(0));
 
     mainTopicKeys = mainTopicList.keys.toList();
     setState(() {
-      build(context);
+      //build(context);
     });
   }
 
@@ -83,7 +76,7 @@ class _TopicScreenState extends State<TopicScreen> {
           String text = mainTopicList[key];
 
           return SizedBox(
-            height: 80.0,
+            height: 180.0,
             child: kOptionButton(
               text: text,
               fontSize: kOptionsMaxFontSize ,

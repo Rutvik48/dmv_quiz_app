@@ -6,63 +6,73 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 
 Widget kCustomText({
-      String text,
-      Color color,
-      TextAlign textAlign=TextAlign.center,
-      fontWeight=FontWeight.normal,
-      double maxFontSize=kDefaultMaxFontSize,
-      double minFontSize=kDefaultMinFontSize,
-
-    }) {
-  return AutoSizeText(text,
-      //overflow: TextOverflow.ellipsis,
-      maxLines: 5,
-      textAlign: textAlign,
-      minFontSize: minFontSize,
-      maxFontSize: maxFontSize,
-      softWrap: true,
-      wrapWords: true,
-      overflow: TextOverflow.visible,
-      style: GoogleFonts.lato().copyWith(
-        color: color,
-        fontWeight: fontWeight,
-      ),
+  String text,
+  Color color,
+  TextAlign textAlign = TextAlign.center,
+  fontWeight = FontWeight.normal,
+  double maxFontSize = kDefaultMaxFontSize,
+  double minFontSize = kDefaultMinFontSize,
+}) {
+  return AutoSizeText(
+    text,
+    //overflow: TextOverflow.ellipsis,
+    maxLines: 5,
+    textAlign: textAlign,
+    minFontSize: minFontSize,
+    maxFontSize: maxFontSize,
+    softWrap: true,
+    wrapWords: true,
+    overflow: TextOverflow.visible,
+    style: GoogleFonts.lato().copyWith(
+      color: color,
+      fontWeight: fontWeight,
+    ),
   );
 }
 
-Padding kOptionButton({
-    double fontSize = kOptionsMinFontSize,
+Padding kOptionButton(
+    {double fontSize = kOptionsMinFontSize,
     @required String text,
     @required Function onPressed,
-    double borderWidth=5,
-    Color borderColor=kOptionBorderColor}) {
+    double borderWidth = 5,
+    Color borderColor = kOptionBorderColor}) {
   return Padding(
     padding: const EdgeInsets.only(
-      left:kQuizScreenLeftRightPadding,
+      left: kQuizScreenLeftRightPadding,
       right: kQuizScreenLeftRightPadding,
       top: 5.0,
       bottom: 5.0,
     ),
-    child: RaisedButton(
-      onPressed: onPressed,
-      child: kCustomText(
+    child: _kCustomRaisedButton(
+        onPressed: onPressed,
+        text: text,
+        fontSize: fontSize,
+        borderColor: borderColor,
+        borderWidth: borderWidth),
+  );
+}
+
+RaisedButton _kCustomRaisedButton(
+    {double fontSize = kOptionsMinFontSize,
+    @required String text,
+    @required Function onPressed,
+    double borderWidth = 5,
+    Color borderColor = kOptionBorderColor}) {
+  return RaisedButton(
+    onPressed: onPressed,
+    child: kCustomText(
         text: text,
         maxFontSize: kOptionsMaxFontSize,
         minFontSize: fontSize,
-        fontWeight: FontWeight.bold
-      ),
-      color: kLogoBackgroundColor,
-      //textColor: kLogoMatchingColor,
-      elevation: 8,
-      //Creates circular edge on the top left corner of the Start button
-      shape: new RoundedRectangleBorder(
-        side: BorderSide(
-            color: borderColor,
-            width: borderWidth,
-            style: BorderStyle.solid
-        ),
-        borderRadius: new BorderRadius.all(Radius.circular(kButtonRadius)),
-      ),
+        fontWeight: FontWeight.bold),
+    color: kOptionButtonBackgroundColor,
+    //textColor: kLogoMatchingColor,
+    elevation: 8,
+    //Creates circular edge on the top left corner of the Start button
+    shape: new RoundedRectangleBorder(
+      side: BorderSide(
+          color: borderColor, width: borderWidth, style: BorderStyle.solid),
+      borderRadius: new BorderRadius.all(Radius.circular(kButtonRadius)),
     ),
   );
 }
@@ -96,7 +106,7 @@ CircularCountDownTimer kCircularCountDownTimer() {
   );
 }
 
-Center kDash (BuildContext context){
+Center kDash(BuildContext context) {
   return Center(
     child: const Divider(
       color: kLogoMatchingColor,

@@ -9,11 +9,11 @@ const kLogoMatchingColor = Color(0xFFea5723);
 const kLogoMatchingColorWithLowAlpha = Color.fromARGB(256,234, 185, 142);
 const kLogoBackgroundColor = Color(0xFFFFFFFF);
 const kQuizScreenLeftRightPadding = 20.0;
+
 //Used for AutoSizeText
 ///NOTE: When min is specified, it sets font size to minFontSize specified
 const double kDefaultMaxFontSize = 30.0;
 const double kDefaultMinFontSize = 15.0;
-
 
 //Welcome Screen constants
 ///NOTE: When min is specified, it sets font size to minFontSize specified
@@ -32,6 +32,7 @@ const double kNextButtonFontSize = 22;
 const bool kShowTimer = false;
 const double kButtonRadius = 15.0;
 
+const Color kOptionButtonBackgroundColor = Colors.white;
 const Color kQuestionNumberTextColor = Color(0x44000000);
 const Color kDividerLineColor = kLogoMatchingColor;
 const Color kQuestionTextColor = kLogoMatchingColor;

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/controller/quiz_class.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class QuizScreen extends StatefulWidget {
   static const String id = 'quiz_screen';
@@ -160,6 +161,8 @@ class _QuizScreenState extends State<QuizScreen> {
       children: [
         if (kShowTimer) timer(),
 
+        getExitAndSkipButton(),
+
         SizedBox(
           height: 20.0,
         ),
@@ -194,6 +197,42 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
+  Row getExitAndSkipButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          getExitButton(),
+
+          getSkipButton(),
+        ],
+      );
+  }
+
+  Expanded getExitButton() {
+    return Expanded(
+      child: Align(
+        child: IconButton(
+            icon: Icon(
+              LineAwesomeIcons.arrow_circle_left,
+              size: 40.0,
+            ),
+          onPressed: (){print('Exit Button pressed.');},
+        ),//Icons()LineAwesomeIcons.
+        alignment: Alignment.centerLeft,
+      ),
+    );
+  }
+
+  Expanded getSkipButton() {
+    return Expanded(
+          child: Align(
+            child: kCustomText(text: 'Text 2'),
+            alignment: Alignment.centerRight,
+          ),
+        );
+  }
+
+
   Padding timer() {
     return Padding(
       padding: EdgeInsets.only(
@@ -201,10 +240,6 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
       child: Center(
         child: kCircularCountDownTimer(),
-        //kCustomText(
-        //text: 'TIMER',
-        //textSize: 30,
-        //),
       ),
     );
   }
@@ -277,32 +312,42 @@ class _QuizScreenState extends State<QuizScreen> {
         optionText: option1,
         borderColor: option1BorderColor,
         onPressed: () {
+          if(!optionClicked){
             checkAnswer(clickedOption: option1,optionNumber: 1);
-            int optionNumber = 1;
+          }
         });
   }
+
   Widget getOption2 ({Color borderColor=kLogoMatchingColor}){
     return getOptionButton(
         optionText: option2,
         borderColor: option2BorderColor,
         onPressed: () {
+          if(!optionClicked){
             checkAnswer(clickedOption: option2,optionNumber: 2);
+          }
         });
   }
+
   Widget getOption3 ({Color borderColor=kLogoMatchingColor}){
     return getOptionButton(
         optionText: option3,
         borderColor: option3BorderColor,
         onPressed: () {
+          if(!optionClicked){
             checkAnswer(clickedOption: option3,optionNumber: 3);
+          }
         });
   }
+
   Widget getOption4 ({Color borderColor=kLogoMatchingColor}){
     return getOptionButton(
         optionText: option4,
         borderColor: option4BorderColor,
         onPressed: () {
-            checkAnswer(clickedOption: option4,optionNumber: 4);
+            if(!optionClicked){
+              checkAnswer(clickedOption: option4,optionNumber: 4);
+            }
         });
   }
 
@@ -326,40 +371,41 @@ class _QuizScreenState extends State<QuizScreen> {
           //Child will be at bottom right
           alignment: Alignment.bottomRight,
 
-          child: RaisedButton(
-            onPressed: () {
-
-              //TODO: 'increaseQuesNum()' returns a boolean. When return false goToResultScreen
-              if (quizSingleton.increaseQuesNum()){
-                changeQuestion();
-              } else {
-                goToResultScreen();
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.only(left: 35, right: 35, top: 25, bottom: 25),
-              child: kCustomText(
-                text: 'Next',
-                minFontSize: kNextButtonFontSize,
-                fontWeight: FontWeight.w900,
-                color: kNextButtonTextColor,
-              ),
-            ),
-            color: kQuestionTextColor,
-            textColor: Colors.white,
-            elevation: 8,
-            //Creates circular edge on the top left corner of the Start button
-            shape: RoundedRectangleBorder(
-//                side: BorderSide(
-//                    color: kLogoMatchingColorWithLowAlpha,
-//                    width: 5,
-//                    style: BorderStyle.solid),
-              borderRadius:
-              new BorderRadius.only(topLeft: Radius.circular(50.0)),
-            ),
-          ),
+          child: _kCustomRaisedButton(),
         ),
       ),
     );
+  }
+
+  RaisedButton _kCustomRaisedButton() {
+    return RaisedButton(
+          onPressed: () {
+
+            //TODO: 'increaseQuesNum()' returns a boolean. When return false goToResultScreen
+            if (quizSingleton.increaseQuesNum()){
+              changeQuestion();
+            } else {
+              goToResultScreen();
+            }
+          },
+          child: Padding(
+            padding: EdgeInsets.only(left: 35, right: 35, top: 25, bottom: 25),
+            child: kCustomText(
+              text: 'Next',
+              minFontSize: kNextButtonFontSize,
+              fontWeight: FontWeight.w900,
+              //color: kNextButtonTextColor,
+              color: kLogoBackgroundColor,
+            ),
+          ),
+          color: kQuestionTextColor,
+          textColor: Colors.white,
+          elevation: 8,
+          //Creates circular edge on the top left corner of the Start button
+          shape: RoundedRectangleBorder(
+            borderRadius:
+            new BorderRadius.only(topLeft: Radius.circular(50.0)),
+          ),
+        );
   }
 }
