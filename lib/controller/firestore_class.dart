@@ -5,13 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FireStoreClass {
   final firestoreInstance = Firestore.instance;
-
   static final FireStoreClass _singleton = FireStoreClass._internal();
-  static String selectedTopic = 'traffic_controll';
-
   factory FireStoreClass() => _singleton;
   FireStoreClass._internal();
 
+  static String selectedTopic = '';
 
   void setSelectedTopic(String topic) {
     selectedTopic = topic;

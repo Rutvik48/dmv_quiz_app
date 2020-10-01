@@ -29,7 +29,7 @@ class Quiz {
 
   var firebaseInstance = FireStoreClass();
 
-  int getQuesNum() {
+  static int getQuesNum() {
     return (_questionCounter + 1);
   }
 

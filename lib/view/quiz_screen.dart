@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/controller/quiz_class.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class QuizScreen extends StatefulWidget {
   static const String id = 'quiz_screen';
@@ -161,31 +163,17 @@ class _QuizScreenState extends State<QuizScreen> {
       children: [
         if (kShowTimer) timer(),
 
-        getExitAndSkipButton(),
+        //getExitAndSkipButton(),
 
-        SizedBox(
-          height: 20.0,
-        ),
+        //getSizedBox(withHeight: 20.0),
 
-        questionNumber(),
+        questionNumberHeader(totalQuestions: totalNumberOfQuestions, context: context),
 
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 25.0,
-            bottom: 15.0,
-          ),
-          child: kDash(context),
-        ),
+        kDash(context),
 
-        questionWidget(),
+        questionWidget(questionText: question),
 
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 15.0,
-            bottom: 15.0,
-          ),
-          child: kDash(context),
-        ),
+        kDash(context),
 
         optionsWidget(),
 //        SizedBox(
@@ -197,85 +185,61 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  Row getExitAndSkipButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          getExitButton(),
 
-          getSkipButton(),
+
+  Widget questionNumberHeader({@required int totalQuestions, @required BuildContext context, @required Function function}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Row(
+        children: [
+
+          getExitButton(context: context),
+
+          Expanded(
+            flex: 5,
+            child: Align(
+              alignment: Alignment.center,
+              child: kCustomText(
+                text: 'Question ${Quiz.getQuesNum()}/$totalQuestions',
+                //textSize: 30,
+                minFontSize: kQuestionNumberTextFontSize,
+                maxFontSize: kQuestionNumberTextFontSize,
+                fontWeight: FontWeight.bold,
+                color: kQuestionNumberTextColor,
+              ),
+            ),
+          ),
+          getSkipButton(context: context, function: function),
         ],
-      );
+      ),
+    );
   }
 
-  Expanded getExitButton() {
+  Expanded getSkipButton({@required BuildContext context,Function function()}) {
     return Expanded(
       child: Align(
         child: IconButton(
-            icon: Icon(
-              LineAwesomeIcons.arrow_circle_left,
-              size: 40.0,
-            ),
-          onPressed: (){print('Exit Button pressed.');},
+          icon: Icon(
+            LineAwesomeIcons.arrow_circle_o_right,
+            size: 40.0,
+            color: kLogoMatchingColor,
+          ),
+          onPressed: (){
+            print('Skip Button pressed.');
+
+            nextQuestion();
+            Fluttertoast.showToast(
+              msg: "Question Skipped",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.SNACKBAR,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white70,
+              fontSize: 24.0,
+            );
+          },
         ),//Icons()LineAwesomeIcons.
-        alignment: Alignment.centerLeft,
-      ),
-    );
-  }
-
-  Expanded getSkipButton() {
-    return Expanded(
-          child: Align(
-            child: kCustomText(text: 'Text 2'),
-            alignment: Alignment.centerRight,
-          ),
-        );
-  }
-
-
-  Padding timer() {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 30,
-      ),
-      child: Center(
-        child: kCircularCountDownTimer(),
-      ),
-    );
-  }
-
-  AutoSizeText questionNumber() {
-    return kCustomText(
-      text: 'Question ${quizSingleton.getQuesNum()}/$totalNumberOfQuestions',
-      //textSize: 30,
-      minFontSize: kQuestionNumberTextFontSize,
-      maxFontSize: kQuestionNumberTextFontSize,
-      fontWeight: FontWeight.bold,
-      color: kQuestionNumberTextColor,
-    );
-  }
-
-  Expanded questionWidget() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          right: kQuizScreenLeftRightPadding,
-          left: kQuizScreenLeftRightPadding,
-        ),
-        child: Center(
-          child: Container(
-            color: kLogoBackgroundColor,
-            child: Center(
-              child: kCustomText(
-                  text: question,
-                  color: kQuestionTextColor,
-                  maxFontSize: kQuestionTextMaxFontSize,
-                  minFontSize: kQuestionTextMinFontSize,
-                  textAlign: TextAlign.center,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
+        alignment: Alignment.topRight,
       ),
     );
   }
@@ -306,6 +270,7 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
     );
   }
+
 
   Widget getOption1 ({Color borderColor=kLogoMatchingColor}){
     return getOptionButton(
@@ -345,19 +310,47 @@ class _QuizScreenState extends State<QuizScreen> {
         optionText: option4,
         borderColor: option4BorderColor,
         onPressed: () {
-            if(!optionClicked){
-              checkAnswer(clickedOption: option4,optionNumber: 4);
-            }
+          if(!optionClicked){
+            checkAnswer(clickedOption: option4,optionNumber: 4);
+          }
         });
   }
 
-  Widget getOptionButton({@required String optionText, @required Function onPressed, Color borderColor}) {
-    return kOptionButton(
-      text: optionText,
-      onPressed: onPressed,
-      borderColor: borderColor,
+  void nextQuestion(){
+    ///'increaseQuesNum()' returns a boolean. When return false goToResultScreen
+    if (quizSingleton.increaseQuesNum()){
+      changeQuestion();
+    } else {
+      goToResultScreen();
+    }
+  }
+
+  RaisedButton _kCustomRaisedButton() {
+    return RaisedButton(
+      onPressed: () {
+        nextQuestion();
+      },
+      child: Padding(
+        padding: EdgeInsets.only(left: 35, right: 35, top: 25, bottom: 25),
+        child: kCustomText(
+          text: 'Next',
+          minFontSize: kNextButtonFontSize,
+          fontWeight: FontWeight.w900,
+          //color: kNextButtonTextColor,
+          color: kLogoBackgroundColor,
+        ),
+      ),
+      color: kQuestionTextColor,
+      textColor: Colors.white,
+      elevation: 8,
+      //Creates circular edge on the top left corner of the Start button
+      shape: RoundedRectangleBorder(
+        borderRadius:
+        new BorderRadius.only(topLeft: Radius.circular(50.0)),
+      ),
     );
   }
+
 
   Visibility getNextButtonWidget() {
     return Visibility(
@@ -377,35 +370,4 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  RaisedButton _kCustomRaisedButton() {
-    return RaisedButton(
-          onPressed: () {
-
-            //TODO: 'increaseQuesNum()' returns a boolean. When return false goToResultScreen
-            if (quizSingleton.increaseQuesNum()){
-              changeQuestion();
-            } else {
-              goToResultScreen();
-            }
-          },
-          child: Padding(
-            padding: EdgeInsets.only(left: 35, right: 35, top: 25, bottom: 25),
-            child: kCustomText(
-              text: 'Next',
-              minFontSize: kNextButtonFontSize,
-              fontWeight: FontWeight.w900,
-              //color: kNextButtonTextColor,
-              color: kLogoBackgroundColor,
-            ),
-          ),
-          color: kQuestionTextColor,
-          textColor: Colors.white,
-          elevation: 8,
-          //Creates circular edge on the top left corner of the Start button
-          shape: RoundedRectangleBorder(
-            borderRadius:
-            new BorderRadius.only(topLeft: Radius.circular(50.0)),
-          ),
-        );
-  }
 }

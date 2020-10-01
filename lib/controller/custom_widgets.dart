@@ -106,21 +106,20 @@ CircularCountDownTimer kCircularCountDownTimer() {
   );
 }
 
-Center kDash(BuildContext context) {
-  return Center(
-    child: const Divider(
-      color: kLogoMatchingColor,
-      //height: 20,
-      thickness: 5,
-      indent: 20,
-      endIndent: 20,
+Padding kDash(BuildContext context) {
+  return Padding(
+    padding:const EdgeInsets.only(
+      top: 25.0,
+      bottom: 15.0,
     ),
-    // child: Dash(
-    //     direction: Axis.horizontal,
-    //     length: 10.0,//MediaQuery.of(context).size.width,
-    //     dashLength: 12,
-    //     dashColor: kDividerLineColor,
-    //   dashGap: 0.0,
-    // ),
+    child: Center(
+      child: const Divider(
+        color: kLogoMatchingColor,
+        //height: 20,
+        thickness: 5,
+        indent: 20,
+        endIndent: 20,
+      ),
+    ),
   );
 }
