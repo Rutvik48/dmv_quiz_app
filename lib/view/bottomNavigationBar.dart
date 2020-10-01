@@ -1,4 +1,5 @@
 import 'package:dmvquizapp/view/about_screen.dart';
+import 'package:dmvquizapp/view/login_screen.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:dmvquizapp/view/user_screen.dart';
 import 'package:dmvquizapp/view/welcom_screen.dart';
@@ -30,11 +31,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _currentIndex = AppBottomNavigationBar.currentIndex;
   final List<Widget> _screens = [
     WelcomeScreen(),
-    UserScreen(),
+    LoginScreen(),
     AboutScreen(),
     TopicScreen(),
   ];
-
+//UserScreen(),
 
   @override
   Widget build(BuildContext context) {
