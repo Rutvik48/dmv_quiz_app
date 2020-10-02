@@ -31,11 +31,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _currentIndex = AppBottomNavigationBar.currentIndex;
   final List<Widget> _screens = [
     WelcomeScreen(),
-    LoginScreen(),
+    UserScreen(),
     AboutScreen(),
     TopicScreen(),
   ];
-//UserScreen(),
+//LoginScreen(),
 
   @override
   Widget build(BuildContext context) {

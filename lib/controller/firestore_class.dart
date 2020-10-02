@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'firebase_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//This class holds methods to make changes and retrieve data from Firestore Cloud Database
 class FireStoreClass {
   final firestoreInstance = Firestore.instance;
   static final FireStoreClass _singleton = FireStoreClass._internal();

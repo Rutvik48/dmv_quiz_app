@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter_dash/flutter_dash.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Widget kCustomText({
   String text,
@@ -121,5 +122,18 @@ Padding kDash(BuildContext context) {
         endIndent: 20,
       ),
     ),
+  );
+}
+
+
+Future<bool> kShowToast({@required String toastMessage}){
+  return Fluttertoast.showToast(
+    msg: toastMessage,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.SNACKBAR,
+    timeInSecForIosWeb: 2,
+    backgroundColor: Colors.grey,
+    textColor: Colors.white70,
+    fontSize: 24.0,
   );
 }

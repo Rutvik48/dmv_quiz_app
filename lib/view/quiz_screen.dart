@@ -7,7 +7,6 @@ import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/controller/quiz_class.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class QuizScreen extends StatefulWidget {
   static const String id = 'quiz_screen';
@@ -228,15 +227,8 @@ class _QuizScreenState extends State<QuizScreen> {
             print('Skip Button pressed.');
 
             nextQuestion();
-            Fluttertoast.showToast(
-              msg: "Question Skipped",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.SNACKBAR,
-              timeInSecForIosWeb: 2,
-              backgroundColor: Colors.grey,
-              textColor: Colors.white70,
-              fontSize: 24.0,
-            );
+            kShowToast(toastMessage: "Question Skipped");
+
           },
         ),//Icons()LineAwesomeIcons.
         alignment: Alignment.topRight,

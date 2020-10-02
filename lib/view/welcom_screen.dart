@@ -1,3 +1,4 @@
+import 'package:dmvquizapp/controller/firebase_auth_class.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
@@ -14,6 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   static final firestoreSingleton = FireStoreClass();
+  static final firebaseAuthInstance = FirebaseAuthClass();
 
   AnimationController controller;
   Animation animation;
@@ -21,6 +23,7 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
 
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -31,6 +34,14 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
     controller.addListener(() {
       setState(() {});
     });
+
+    //initialWork();
+  }
+
+  void initialWork() async{
+    //var user = await firebaseAuthInstance.getUserInformation();
+
+    //user != null ?kShowToast(toastMessage: 'Welcome back \n$user'):null;
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
 import 'package:dmvquizapp/controller/sign_in_class.dart';
+import 'package:dmvquizapp/controller/firebase_auth_class.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,6 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuthClass firebaseAuthInstance = FirebaseAuthClass();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        signInWithGoogle().whenComplete(() {
+        firebaseAuthInstance.signInWithGoogle().whenComplete(() {
           // Navigator.of(context).push(
           //   MaterialPageRoute(
           //     builder: (context) {
