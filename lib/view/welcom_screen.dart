@@ -1,4 +1,5 @@
 import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/view/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
@@ -56,19 +57,23 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
             //Expended widget takes as much space as possible
             Expanded(
               child: Image.asset(kWelcomeScreenLogoPath),
-              flex: 2,
+              flex: 3,
             ),
 
             Expanded(
-              child: TypewriterAnimatedTextKit(
-                text: [kQuizAppName],
-                speed: Duration(milliseconds: 200),
-                textAlign: TextAlign.center,
-                isRepeatingAnimation: false,
-                textStyle: TextStyle(
-                  fontSize: 45.0,
-                  fontWeight: FontWeight.w900,
-                  color: kLogoMatchingColor,
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: TypewriterAnimatedTextKit(
+                  text: [kQuizAppName],
+                  speed: Duration(milliseconds: 200),
+                  textAlign: TextAlign.center,
+                  isRepeatingAnimation: false,
+                  textStyle: TextStyle(
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.w900,
+                    color: kLogoMatchingColor,
+                  ),
                 ),
               ),
             ),
@@ -79,6 +84,22 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
                   text: kQuizDescription,
                   color: kLogoMatchingColor,
                   maxFontSize: 18,
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Center(
+                child: Container(
+                  //color: Colors.yellow,
+                  child: kRoundButton(
+                    buttonText: 'Log In / Sign Up Here',
+                    fontWeight: FontWeight.normal,
+                    textColor: kLogoMatchingColor,
+                    backgroundColor: kLogoBackgroundColor,
+                    onPressed: (){
+                      Navigator.pushNamed(context, LoginScreen.id);
+                    },),
                 ),
               ),
             ),

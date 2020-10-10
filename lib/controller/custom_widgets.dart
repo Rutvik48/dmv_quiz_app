@@ -137,3 +137,85 @@ Future<bool> kShowToast({@required String toastMessage}){
     fontSize: 24.0,
   );
 }
+
+RaisedButton kRoundButton( {
+  @required Function onPressed,
+  @required String buttonText,
+  double radius=20,
+  Color textColor=kLogoBackgroundColor,
+  Color backgroundColor=kLogoMatchingColor,
+  FontWeight fontWeight=FontWeight.w900,
+  double topAndBottomPadding=10,
+
+}) {
+  return RaisedButton(
+    onPressed: onPressed,
+    child: Padding(
+      padding: EdgeInsets.only(left: 35, right: 35, top: topAndBottomPadding, bottom: topAndBottomPadding),
+      child: kCustomText(
+        text: buttonText,
+        minFontSize: kNextButtonFontSize,
+        fontWeight: fontWeight,
+        //color: kNextButtonTextColor,
+        color: textColor,
+      ),
+    ),
+    color: backgroundColor,
+    textColor: kLogoMatchingColor,
+    elevation: 8,
+    //Creates circular edge on the top left corner of the Start button
+    shape: RoundedRectangleBorder(
+      borderRadius:
+      new BorderRadius.all(Radius.circular(20.0)),
+    ),
+  );
+}
+
+RaisedButton kNextButton( {@required Function onPressed}) {
+  return RaisedButton(
+    onPressed: onPressed,
+    child: Padding(
+      padding: EdgeInsets.only(left: 35, right: 35, top: 25, bottom: 25),
+      child: kCustomText(
+        text: 'Next',
+        minFontSize: kNextButtonFontSize,
+        fontWeight: FontWeight.w900,
+        //color: kNextButtonTextColor,
+        color: kLogoBackgroundColor,
+      ),
+    ),
+    color: kQuestionTextColor,
+    textColor: Colors.white,
+    elevation: 8,
+    //Creates circular edge on the top left corner of the Start button
+    shape: RoundedRectangleBorder(
+      borderRadius:
+      new BorderRadius.only(topLeft: Radius.circular(50.0)),
+    ),
+  );
+}
+
+
+
+final kHintTextStyle = TextStyle(
+  color: Colors.white54,
+  fontFamily: 'OpenSans',
+);
+
+final kLabelStyle = TextStyle(
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'OpenSans',
+);
+
+final kBoxDecorationStyle = BoxDecoration(
+  color: Color(0xFF6CA8F1),
+  borderRadius: BorderRadius.circular(10.0),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black12,
+      blurRadius: 6.0,
+      offset: Offset(0, 2),
+    ),
+  ],
+);

@@ -317,32 +317,6 @@ class _QuizScreenState extends State<QuizScreen> {
     }
   }
 
-  RaisedButton _kCustomRaisedButton() {
-    return RaisedButton(
-      onPressed: () {
-        nextQuestion();
-      },
-      child: Padding(
-        padding: EdgeInsets.only(left: 35, right: 35, top: 25, bottom: 25),
-        child: kCustomText(
-          text: 'Next',
-          minFontSize: kNextButtonFontSize,
-          fontWeight: FontWeight.w900,
-          //color: kNextButtonTextColor,
-          color: kLogoBackgroundColor,
-        ),
-      ),
-      color: kQuestionTextColor,
-      textColor: Colors.white,
-      elevation: 8,
-      //Creates circular edge on the top left corner of the Start button
-      shape: RoundedRectangleBorder(
-        borderRadius:
-        new BorderRadius.only(topLeft: Radius.circular(50.0)),
-      ),
-    );
-  }
-
 
   Visibility getNextButtonWidget() {
     return Visibility(
@@ -356,7 +330,9 @@ class _QuizScreenState extends State<QuizScreen> {
           //Child will be at bottom right
           alignment: Alignment.bottomRight,
 
-          child: _kCustomRaisedButton(),
+          child: kNextButton(onPressed: () {
+            nextQuestion();
+          },),
         ),
       ),
     );
