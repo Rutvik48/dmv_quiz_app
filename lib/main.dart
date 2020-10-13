@@ -1,5 +1,6 @@
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:dmvquizapp/view/login_screen.dart';
+import 'package:dmvquizapp/view/signup_screen.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/view/welcom_screen.dart';
@@ -27,6 +28,7 @@ class QuizApp extends StatelessWidget {
         QuizScreen.id: (context) => QuizScreen(),
         ResultScreen.id: (context) => ResultScreen(),
         LoginScreen.id: (context) => LoginScreen(),
+        SignUpScreen.id: (context) => SignUpScreen(),
       },
     );
   }

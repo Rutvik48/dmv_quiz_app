@@ -1,21 +1,21 @@
 import 'package:dmvquizapp/controller/constants.dart';
-import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
-import 'package:dmvquizapp/view/bottomNavigationBar.dart';
-import 'package:dmvquizapp/view/signup_screen.dart';
+import 'package:dmvquizapp/view/login_screen.dart';
+//import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
+//import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
-import 'package:dmvquizapp/controller/sign_in_class.dart';
+//import 'package:dmvquizapp/controller/sign_in_class.dart';
 import 'package:dmvquizapp/controller/firebase_auth_class.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String id = 'login_screen';
+class SignUpScreen extends StatefulWidget {
+  static const String id = 'signUp_screen';
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   FirebaseAuthClass firebaseAuthInstance = FirebaseAuthClass();
   static const double padding = 30.0;
   static const textColor = Colors.white;
@@ -25,15 +25,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: kCustomText(text: 'Sign In Here'),
+        title: kCustomText(text: 'Sign Up Here'),
         backgroundColor: kLogoMatchingColor,
       ),
-      body: buildLogInScreen(),
+      body: buildSignUpScreen(),
       backgroundColor: Color(0xFF60A6F1),
     );
   }
 
-  Widget buildLogInScreen() {
+  Widget buildSignUpScreen() {
     return Container(
       //color: textColor,
       child: Center(
@@ -44,10 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
             //FlutterLogo(size: 150),
             //_getSignInHeader(),
             getEmailPswdTextFields(),
-            
+
             _getLoginAndGoogleSignUpButton(),
 
-            getSignUpText(),
+            //getSignUpText(),
             //SizedBox(height: 50),
           ],
         ),
@@ -69,14 +69,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   kCustomText(
-                    color: textColor,
-                      text: "Don't have an Account?", minFontSize: 20.0),
+                      color: textColor,
+                      text: "Already have an Account?", minFontSize: 20.0),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, SignUpScreen.id);
+                      Navigator.pushNamed(context, LoginScreen.id);
                     },
                     child: kCustomText(
-                      text: " Sign up",
+                      text: " Sign In Here",
                       color: textColor,
                       minFontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Expanded _getLoginAndGoogleSignUpButton() {
     return Expanded(
-      flex: 2,
+      flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(padding),
         child: Column(
@@ -101,10 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             _buildLoginBtn(),
             kCustomText(
-              text: '--- OR ---',
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              minFontSize: 20.0
+                text: '--- OR ---',
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                minFontSize: 20.0
             ),
             Center(child: _signInWithGoogleButton()),
           ],
@@ -118,22 +118,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Expanded getEmailPswdTextFields() {
     return Expanded(
-      flex: 2,
+      flex: 3,
       child: Container(
         //color: Colors.blueGrey,
         child: Padding(
-          padding: const EdgeInsets.all(padding),
+          padding: const EdgeInsets.only(right: padding, left: padding),
           child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            buildEmailTextField(),
-            SizedBox(
-              height: 30.0,
-            ),
-            buildPasswordTextField(),
-            _getForgetPasswordText(),
-          ],
-      ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buildFullNameTextField(),
+              SizedBox(
+                height: 15.0,
+              ),
+              buildEmailTextField(),
+              SizedBox(
+                height: 15.0,
+              ),
+              buildPasswordTextField(),
+              _getForgetPasswordText(),
+            ],
+          ),
         ),
       ),
     );
@@ -149,11 +153,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _signInWithGoogleButton() {
-    
+
     return getSignUpLogInWithGoogleButton(
       textColor: textColor,
       context: context,
-      signInOrUpText: 'Sign In',
+      signInOrUpText: 'Sign Up',
 
     );
   }
@@ -165,9 +169,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Align(
           alignment: Alignment.bottomRight,
           child: kCustomText(
-            text: 'Forgot Password?',
-            fontWeight: FontWeight.w900,
-            color: textColor
+              text: 'Forgot Password?',
+              fontWeight: FontWeight.w900,
+              color: textColor
           ),
         ),
       ),
@@ -179,10 +183,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       width: double.infinity,
       child: kRoundButton(
-          onPressed: (){},
-          buttonText: 'LOGIN',
+        onPressed: (){},
+        buttonText: 'Sign Up',
         backgroundColor: textColor,
-          textColor: Color(0xFF527DAA),
+        textColor: Color(0xFF527DAA),
       ),
     );
   }

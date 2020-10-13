@@ -1,10 +1,16 @@
 import 'package:dmvquizapp/controller/constants.dart';
+import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:dmvquizapp/controller/sign_in_class.dart';
+
+FirebaseAuthClass firebaseAuthInstance = FirebaseAuthClass();
 
 Widget kCustomText({
   String text,
@@ -141,7 +147,7 @@ Future<bool> kShowToast({@required String toastMessage}){
 RaisedButton kRoundButton( {
   @required Function onPressed,
   @required String buttonText,
-  double radius=20,
+  double borderRadius=20,
   Color textColor=kLogoBackgroundColor,
   Color backgroundColor=kLogoMatchingColor,
   FontWeight fontWeight=FontWeight.w900,
@@ -149,6 +155,7 @@ RaisedButton kRoundButton( {
 
 }) {
   return RaisedButton(
+    visualDensity: VisualDensity.comfortable,
     onPressed: onPressed,
     child: Padding(
       padding: EdgeInsets.only(left: 35, right: 35, top: topAndBottomPadding, bottom: topAndBottomPadding),
@@ -166,7 +173,7 @@ RaisedButton kRoundButton( {
     //Creates circular edge on the top left corner of the Start button
     shape: RoundedRectangleBorder(
       borderRadius:
-      new BorderRadius.all(Radius.circular(20.0)),
+      new BorderRadius.all(Radius.circular(borderRadius)),
     ),
   );
 }
@@ -209,7 +216,7 @@ final kLabelStyle = TextStyle(
 );
 
 final kBoxDecorationStyle = BoxDecoration(
-  color: Color(0xFF6CA8F1),
+  color: Color(0xFF6BA7F1),
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: [
     BoxShadow(
@@ -219,3 +226,106 @@ final kBoxDecorationStyle = BoxDecoration(
     ),
   ],
 );
+
+
+Widget buildFullNameTextField() {
+  return _buildTextBox(
+    textBoxName: 'Full Name',
+    icon: LineAwesomeIcons.envelope,
+  );
+
+}
+
+Widget buildEmailTextField() {
+  return _buildTextBox(
+    textBoxName: 'Email',
+    icon: LineAwesomeIcons.envelope,
+  );
+
+}
+
+Widget buildPasswordTextField() {
+  return _buildTextBox(
+    textBoxName: 'Password',
+    icon: LineAwesomeIcons.lock,
+  );
+}
+
+Widget _buildTextBox({
+  @required String textBoxName,
+  @required IconData icon,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      kCustomText(
+          text: textBoxName,
+          fontWeight: FontWeight.w900,
+          color: Colors.white
+      ),
+      SizedBox(height: 10.0),
+      Container(
+        alignment: Alignment.centerLeft,
+        decoration: kBoxDecorationStyle,
+        height: 60.0,
+        child: TextField(
+          obscureText: true,
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'OpenSans',
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(
+              icon,
+              color: Colors.white,
+            ),
+            hintText: 'Enter your $textBoxName',
+            hintStyle: kHintTextStyle,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+
+OutlineButton getSignUpLogInWithGoogleButton({
+  @required Color textColor,
+  @required BuildContext context,
+  @required String signInOrUpText='Sign In',
+}) {
+  return OutlineButton(
+    splashColor: Colors.grey,
+    onPressed: () {
+      firebaseAuthInstance.signInWithGoogle().whenComplete(() {
+        print('Sign in complete!');
+      }).catchError((error, stackTrace) {
+        print("inner: $error");
+        // although `throw SecondError()` has the same effect.
+        Navigator.pushNamed(context, AppBottomNavigationBar.idToTopicScreen);
+      });
+    },
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+    highlightElevation: 0,
+    borderSide: BorderSide(color: textColor),
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Image(image: AssetImage("images/google_logo.png"), height: 35.0),
+          Expanded(
+            child: kCustomText(
+              text: '$signInOrUpText with Google',
+              minFontSize: 20.0,
+              color: textColor,
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
