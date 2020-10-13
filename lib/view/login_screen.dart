@@ -23,13 +23,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: kCustomText(text: 'Sign In Here'),
-        backgroundColor: kLogoMatchingColor,
+    return GestureDetector(
+      onTap: (){
+        //Removes keyboard when clicked outside of a text field
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: kCustomText(text: 'Sign In Here'),
+          backgroundColor: kLogoMatchingColor,
+        ),
+        body: buildLogInScreen(),
+        backgroundColor: Color(0xFF60A6F1),
       ),
-      body: buildLogInScreen(),
-      backgroundColor: Color(0xFF60A6F1),
     );
   }
 

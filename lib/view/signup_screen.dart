@@ -23,13 +23,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: kCustomText(text: 'Sign Up Here'),
-        backgroundColor: kLogoMatchingColor,
+    return GestureDetector(
+      onTap: (){
+        //Removes keyboard when clicked outside of a text field
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Scaffold(
+        //Makes screen fixed when keyboard comes up
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: kCustomText(text: 'Sign Up Here'),
+          backgroundColor: kLogoMatchingColor,
+        ),
+        body: buildSignUpScreen(),
+        backgroundColor: Color(0xFF60A6F1),
       ),
-      body: buildSignUpScreen(),
-      backgroundColor: Color(0xFF60A6F1),
     );
   }
 
@@ -139,15 +147,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Expanded _getSignInHeader() {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        color: Colors.red,
       ),
     );
   }
