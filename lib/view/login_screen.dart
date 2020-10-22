@@ -1,4 +1,5 @@
 import 'package:dmvquizapp/controller/constants.dart';
+import 'package:dmvquizapp/controller/firestore_class.dart';
 import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:dmvquizapp/view/signup_screen.dart';
@@ -20,6 +21,14 @@ class _LoginScreenState extends State<LoginScreen> {
   static const double padding = 30.0;
   static const textColor = Colors.white;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final firestoreSingleton = FireStoreClass();
+
+    //firestoreSingleton.addUser(userEmail: 'email@123.com', firstName: 'First Name', lastName: 'Last Name');
+  }
 
   @override
   Widget build(BuildContext context) {

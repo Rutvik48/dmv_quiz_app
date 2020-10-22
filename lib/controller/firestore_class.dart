@@ -140,30 +140,49 @@ class FireStoreClass {
   Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {
 
     return createMap(documentSnapshot: documentSnapshot, topicString: FIREBASE_QUIZ_MAIN_TOPIC_ARRAY, trueForTopic: true);
-//    Map topicMap = new Map<String, String>();
-//
-//    print(documentSnapshot.data);
-//    int counter = 0;
-//    documentSnapshot.data[topicString].forEach((key, value) {
-//      topicMap[key] = value;
-//    });
-//    return topicMap;
   }
 
   Map changeSubTopicsIntoMap({@required DocumentSnapshot documentSnapshot}) {
-
     return createMap(documentSnapshot: documentSnapshot, topicString: 'N/A');
-//    Map topicMap = new Map<String, String>();
-//
-//    print(documentSnapshot.data);
-//    int counter = 0;
-//    documentSnapshot.data.forEach((key, value) {
-//      topicMap[key] = value;
-//    });
-//
-//    return topicMap;
   }
 
+  void addUser({
+    @required String userEmail,
+    @required String firstName,
+    @required String lastName,
+    String userPicture
+  }){
+
+    firestoreInstance.collection(FIREBASE_MAIN_USER_COLLECTION).
+    document(FIREBASE_MAIN_USER_DOCUMENT).
+    collection(userEmail).
+    document(FIREBASE_USER_DETAIL_DOCUMENT).setData(
+      {
+        FIREBASE_USER_DETAIL_FIELD_FIRST_NAME: firstName,
+        FIREBASE_USER_DETAIL_FIELD_LAST_NAME: lastName,
+        FIREBASE_USER_DETAIL_FIELD_USER_PIC: userPicture,
+      }
+    );
+  }
+
+  void addScoreDetail({
+    @required int userEmail,
+    @required String firstName,
+    @required String lastName,
+    String userPicture
+  }){
+
+    // firestoreInstance.collection(FIREBASE_MAIN_USER_COLLECTION).
+    // document(FIREBASE_MAIN_USER_DOCUMENT).
+    // collection(userEmail).
+    // document(FIREBASE_USER_DETAIL_DOCUMENT).setData(
+    //     {
+    //       FIREBASE_USER_DETAIL_FIELD_FIRST_NAME: firstName,
+    //       FIREBASE_USER_DETAIL_FIELD_LAST_NAME: lastName,
+    //       FIREBASE_USER_DETAIL_FIELD_USER_PIC: userPicture,
+    //     }
+    // );
+  }
 
 
   void addData() {

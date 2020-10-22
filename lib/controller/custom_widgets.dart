@@ -1,5 +1,6 @@
 import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firestore_class.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:dmvquizapp/controller/sign_in_class.dart';
 
 FirebaseAuthClass firebaseAuthInstance = FirebaseAuthClass();
+final firestoreSingleton = FireStoreClass();
 
 Widget kCustomText({
   String text,
@@ -294,13 +296,23 @@ Widget _buildTextBox({
 OutlineButton getSignUpLogInWithGoogleButton({
   @required Color textColor,
   @required BuildContext context,
-  @required String signInOrUpText='Sign In',
+  String signInOrUpText='Sign In',
 }) {
   return OutlineButton(
     splashColor: Colors.grey,
     onPressed: () {
-      firebaseAuthInstance.signInWithGoogle().whenComplete(() {
+      firebaseAuthInstance.signInWithGoogle().whenComplete(() async {
         print('Sign in complete!');
+
+        print('\n\n Calling getUserEmail() from google signin button .whenComplete()\n\n');
+        //print(firebaseAuthInstance.getUserEmail());
+        firestoreSingleton.addUser(
+            userEmail: await firebaseAuthInstance.getUserEmail(),
+            firstName: firebaseAuthInstance.getFirstName(),
+            lastName: firebaseAuthInstance.getLastName(),
+          userPicture: firebaseAuthInstance.getUserPicture(),
+        );
+
       }).catchError((error, stackTrace) {
         print("inner: $error");
         // although `throw SecondError()` has the same effect.

@@ -93,13 +93,13 @@ class _UserScreenState extends State<UserScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             kCustomText(
-                              text: firebaseAuthSingleton.getUserEmail(),
+                              text: '',//firebaseAuthSingleton.getUserEmail(),
                               fontWeight: FontWeight.bold,
                               color: kLogoMatchingColor,
                               minFontSize: 20.0
                             ),
                             kCustomText(
-                                text: firebaseAuthSingleton.getUserName(),
+                                text: firebaseAuthSingleton.getFirstName(),
                                 fontWeight: FontWeight.bold,
                                 color: kLogoMatchingColor,
                                 minFontSize: 20.0

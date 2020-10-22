@@ -12,7 +12,8 @@ class FirebaseAuthClass{
   factory FirebaseAuthClass() => _singleton;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  static String userName;
+  static String userFirstName;
+  static String userLastName;
   static String userEmail;
   static String userPicture;
 
@@ -21,37 +22,57 @@ class FirebaseAuthClass{
     await _getUserInformation();
   }
 
-  String getUserName(){
-    return userName != null ? userName : 'User Name';
+  String getFirstName(){
+    return userFirstName != null ? userFirstName : 'User Name';
   }
 
-  String getUserEmail(){
-    return userEmail != null ? userEmail : "User's Email";
+  String getLastName(){
+    return userLastName != null ? userLastName : 'User Name';
   }
+  Future<String> getUserEmail() async {
+    print('\n\nInside getUserEmail()\n\n');
+    //getUserEmailFromFirebaseAuth();
+    await _getUserInformation();
+    print('After calling getUserEmailFromFirebaseAuth() $userEmail');
+    return userEmail;
+  }
+  // void getUserEmailFromFirebaseAuth() async{
+  //
+  //   print('\n\nInside getUserEmailFromFirebaseAuth()\n\n');
+  //   if (userEmail == null) {
+  //     //await _getUserInformation();
+  //   }
+  //   print('\n\nDone getUserEmailFromFirebaseAuth()\n\n');
+  //
+  //   //return userEmail != null ? userEmail : "User's Email";
+  // }
 
   String getUserPicture(){
     return userPicture != null ? userPicture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
   }
 
-  Future<String> _getUserInformation() async{
+  Future<void> _getUserInformation() async{
+    print('_getUserInformation() is called');
+    FirebaseUser currentUser;// = await _auth.currentUser();
+    await _auth.currentUser();
 
-    print('Get userinfo is called');
-
-    final FirebaseUser currentUser = await _auth.currentUser();
-
+    currentUser = await _auth.currentUser();
     //currentuser would be null if user is not logged in.
     if (currentUser != null){
 
-      userName = currentUser.displayName;
+      var temp = currentUser.displayName.split(' ');
+      userFirstName =  temp[0];
+      userLastName = temp[1];
       userEmail = currentUser.email;
       userPicture = currentUser.photoUrl;
 
-      return userName;
+      //return userFirstName;
     } else {
       print('User is not logged in or _auth.currentUser is null');
-      return null;
+      //return null;
     }
 
+    print('End of _getUserInformation()');
   }
 
 
