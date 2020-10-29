@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
 import 'package:dmvquizapp/controller/sign_in_class.dart';
 import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/custom_methods_class.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -18,6 +19,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuthClass firebaseAuthInstance = FirebaseAuthClass();
+  TextEditingController emailTextHolder = TextEditingController();
+  TextEditingController passwordTextHolder = TextEditingController();
   static const double padding = 30.0;
   static const textColor = Colors.white;
 
@@ -26,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     final firestoreSingleton = FireStoreClass();
+
 
     //firestoreSingleton.addUser(userEmail: 'email@123.com', firstName: 'First Name', lastName: 'Last Name');
   }
@@ -109,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Expanded _getLoginAndGoogleSignUpButton() {
     return Expanded(
-      flex: 2,
+      flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(padding),
         child: Column(
@@ -120,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
               text: '--- OR ---',
               color: textColor,
               fontWeight: FontWeight.bold,
-              minFontSize: 20.0
+              minFontSize: 15.0
             ),
             Center(child: _signInWithGoogleButton()),
           ],
@@ -130,11 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 
-
-
   Expanded getEmailPswdTextFields() {
     return Expanded(
-      flex: 2,
+      flex: 4,
       child: Container(
         //color: Colors.blueGrey,
         child: Padding(
@@ -142,24 +144,15 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            buildEmailTextField(),
+            buildEmailTextField(emailTextHolder: emailTextHolder),
             SizedBox(
               height: 30.0,
             ),
-            buildPasswordTextField(),
+            buildPasswordTextField(passwordTextHolder: passwordTextHolder),
             _getForgetPasswordText(),
           ],
       ),
         ),
-      ),
-    );
-  }
-
-  Expanded _getSignInHeader() {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        color: Colors.red,
       ),
     );
   }
@@ -195,12 +188,48 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       width: double.infinity,
       child: kRoundButton(
-          onPressed: (){},
+          onPressed: () async {
+
+            String email;
+            String password;
+
+            try {
+              email = filterText(emailTextHolder.text);
+              password = filterText(passwordTextHolder.text);
+
+              String status = await firebaseAuthInstance.signInWithEmail(userEmail: emailTextHolder.text, userPassword: passwordTextHolder.text)
+                  .catchError((errorCode){
+                    print('E Code:---------> $errorCode');
+
+                    //firebaseAuthInstance.showError(errorCode, context)
+                  }).whenComplete(() {
+
+                    print("signInWithEmail whenComplete function");
+              });
+              status != 'null'? firebaseAuthInstance.showError(errorCode: status, context: context): print("Login Successful.");
+
+              print("Error Code:---------> $status");
+
+              print('Getting User"s email: ${await firebaseAuthInstance.getUserEmail()}');
+              print('Email: ${emailTextHolder.text}');
+              print('Password: ${passwordTextHolder.text}');
+
+            } catch (error){
+              kShowToast(toastMessage: 'Fill all shown fields');
+              print('Error caught in buildLogInBtn');
+              print(error);
+
+            }finally {
+
+            }
+
+
+
+          },
           buttonText: 'LOGIN',
         backgroundColor: textColor,
           textColor: Color(0xFF527DAA),
       ),
     );
   }
-
 }

@@ -230,32 +230,49 @@ final kBoxDecorationStyle = BoxDecoration(
 );
 
 
-Widget buildFullNameTextField() {
+Widget buildFullNameTextField(
+    {
+      @required TextEditingController fullNameTextHolder
+    }
+    ) {
   return _buildTextBox(
     textBoxName: 'Full Name',
     icon: LineAwesomeIcons.envelope,
+    text: fullNameTextHolder,
   );
 
 }
 
-Widget buildEmailTextField() {
+Widget buildEmailTextField(
+{
+  @required TextEditingController emailTextHolder
+}
+    ) {
   return _buildTextBox(
     textBoxName: 'Email',
     icon: LineAwesomeIcons.envelope,
+    text: emailTextHolder,
   );
 
 }
 
-Widget buildPasswordTextField() {
+Widget buildPasswordTextField({
+  @required TextEditingController passwordTextHolder
+}) {
   return _buildTextBox(
     textBoxName: 'Password',
     icon: LineAwesomeIcons.lock,
+    obscureText: true,
+    text: passwordTextHolder,
   );
 }
+
 
 Widget _buildTextBox({
   @required String textBoxName,
   @required IconData icon,
+  @required TextEditingController text,
+  bool obscureText=false,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +288,11 @@ Widget _buildTextBox({
         decoration: kBoxDecorationStyle,
         height: 60.0,
         child: TextField(
-          obscureText: true,
+          obscureText: obscureText,
+          controller: text,
+          onSubmitted: (String userInput){
+            print("User Input: $userInput \n\n\n");
+          },
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
@@ -339,5 +360,50 @@ OutlineButton getSignUpLogInWithGoogleButton({
         ],
       ),
     ),
+  );
+}
+
+
+void showAlert({
+  @required BuildContext context,
+  @required String alertTitle,
+  @required String alertText,
+  String mainButtonText='Okay',
+  
+}) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(alertTitle),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(alertText),
+              //Text('Yre you sure about this?.'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(mainButtonText),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+
+          if(false) FlatButton(
+            child: Text('Yes'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              //TODO: If points are being added while user is playing, make sure to not save it on firestore
+              ///Pressing yes means exiting the round, so points shouldn't be saved
+              Navigator.pushNamed(context, AppBottomNavigationBar.idToHomeScreen);
+            },
+          ),
+        ],
+      );
+    },
   );
 }

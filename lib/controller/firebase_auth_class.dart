@@ -1,8 +1,11 @@
+import 'package:dmvquizapp/controller/custom_widgets.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'firebase_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
 
 class FirebaseAuthClass{
 
@@ -19,50 +22,44 @@ class FirebaseAuthClass{
 
 
   void fillUserInformation() async {
-    await _getUserInformation();
+    await _setUserInformation();
   }
 
   String getFirstName(){
-    return userFirstName != null ? userFirstName : 'User Name';
+    return userFirstName != null ? userFirstName : '';
   }
 
   String getLastName(){
-    return userLastName != null ? userLastName : 'User Name';
+    return userLastName != null ? userLastName : '';
   }
   Future<String> getUserEmail() async {
-    print('\n\nInside getUserEmail()\n\n');
-    //getUserEmailFromFirebaseAuth();
-    await _getUserInformation();
-    print('After calling getUserEmailFromFirebaseAuth() $userEmail');
+
+    await _setUserInformation();
+
     return userEmail;
   }
-  // void getUserEmailFromFirebaseAuth() async{
-  //
-  //   print('\n\nInside getUserEmailFromFirebaseAuth()\n\n');
-  //   if (userEmail == null) {
-  //     //await _getUserInformation();
-  //   }
-  //   print('\n\nDone getUserEmailFromFirebaseAuth()\n\n');
-  //
-  //   //return userEmail != null ? userEmail : "User's Email";
-  // }
 
   String getUserPicture(){
     return userPicture != null ? userPicture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
   }
 
-  Future<void> _getUserInformation() async{
-    print('_getUserInformation() is called');
-    FirebaseUser currentUser;// = await _auth.currentUser();
-    await _auth.currentUser();
+  Future<void> _setUserInformation() async{
 
-    currentUser = await _auth.currentUser();
+    final FirebaseUser currentUser = await _auth.currentUser();
+
     //currentuser would be null if user is not logged in.
     if (currentUser != null){
 
-      var temp = currentUser.displayName.split(' ');
-      userFirstName =  temp[0];
-      userLastName = temp[1];
+      if (currentUser.displayName != null){
+        List<String> temp = currentUser.displayName.split(' ');
+        if (temp.length > 1){
+          userFirstName =  temp[0];
+          userLastName = temp[1];
+        } else{
+          userFirstName =  temp[0];
+        }
+      }
+
       userEmail = currentUser.email;
       userPicture = currentUser.photoUrl;
 
@@ -98,11 +95,123 @@ class FirebaseAuthClass{
     return 'signInWithGoogle succeeded: $user';
   }
 
+  Future<String> signUpNewUserWithEmail ({
+    @required String userEmail,
+    @required String userPassword,
+    @required String fullName,
+  }) async {
+
+    await _auth.createUserWithEmailAndPassword(email: userEmail, password: userPassword)
+    .catchError((errorCode){
+      print("Error Caught in function signInWithEmail(): ${errorCode.code}\n");
+      //print("2nd Error Caught in function signInWithEmail(): $detailedMessage\n");
+
+      throw errorCode;
+    });
+  }
+
+   Future<String> signInWithEmail({
+      @required String userEmail,
+      @required String userPassword
+      })
+  async {
+
+    String returnValue = 'null';
+    try {
+      await _auth
+          .signInWithEmailAndPassword(email: userEmail, password: userPassword)
+          .catchError((error) {
+        print("Error Caught in function signInWithEmail(): \n$error\n");
+
+        print("Type of error: ${error.runtimeType}");
+        returnValue = error.code;
+
+        print("Error Code inside signItWithEmail try block ---> $returnValue");
+        //throw error;
+      });
+    } catch (error){
+      //throw error.code;
+      print("This is ---> $error");
+    }
+
+    return returnValue;
+  }
 
   void signOutGoogle() async{
     await googleSignIn.signOut();
 
     print("User Sign Out");
   }
+
+
+  void showError({
+    @required String errorCode,
+    @required BuildContext context}){
+    switch (errorCode) {
+      case "ERROR_INVALID_EMAIL":{
+        print('Check your Email');
+        showAlert(context: context, alertTitle: 'Invalid Email', alertText: "Check your email.");
+      }
+      break;
+
+      case "ERROR_USER_NOT_FOUND":{
+        print('User is not registered. Please check your email');
+        showAlert(context: context, alertTitle: 'Email Not Found', alertText: "Email is not found.");
+      }
+      break;
+
+      case ("ERROR_WRONG_PASSWORD"):{
+        print('Password is wrong');
+        showAlert(context: context, alertTitle: 'Check Details', alertText: "Email or Password is wrong");
+      }
+      break;
+
+      case ("ERROR_WRONG_PASSWORD"):{print('');}
+      break;
+
+      case ("ERROR_NETWORK_REQUEST_FAILED"):{
+        print("There is an Network Issue. Ensure you're connected to Internet");
+        showAlert(context: context, alertTitle: 'Network Issue', alertText: "Check you're connected to Internet and try again.");
+      }
+      break;
+
+      default:{
+        print("Some issue occurred while logging in.");
+        showAlert(context: context, alertTitle: "Can't Log In", alertText: "An Issue occurred while logging in. Please try again. ");
+      }
+      break;
+      //case
+      //default:
+    }
+  }
+  // void showError (error: Error?,errorMsg: AuthErrorCode,screen: UIViewController) {
+  //
+  // switch errorMsg {
+  //
+  // case .networkError:
+  // createUIalert("Network Error.", screen)
+  // break
+  // case .userNotFound:
+  // createUIalert("Email Not Found!", screen)
+  // break
+  // case .wrongPassword:
+  // createUIalert("Email or Pasword is wrong", screen)
+  // break
+  // case .tooManyRequests:
+  // createUIalert("too many request", screen)
+  // break
+  // case .invalidEmail:
+  // createUIalert("Invalid Email", screen)
+  // break
+  // case .emailAlreadyInUse:
+  // createUIalert("Email is already in use.", screen)
+  // break
+  // case .weakPassword:
+  // createUIalert("weak password", screen)
+  // break
+  // default:
+  // createUIalert("Error occured. Please try again.", screen)
+  // }
+  // }
 
 }

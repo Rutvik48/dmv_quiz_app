@@ -17,9 +17,12 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   FirebaseAuthClass firebaseAuthInstance = FirebaseAuthClass();
+  TextEditingController emailTextHolder = TextEditingController();
+  TextEditingController passwordTextHolder = TextEditingController();
+  TextEditingController fullNameTextHolder = TextEditingController();
+
   static const double padding = 30.0;
   static const textColor = Colors.white;
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Expanded getEmailPswdTextFields() {
     return Expanded(
-      flex: 3,
+      flex: 4,
       child: Container(
         //color: Colors.blueGrey,
         child: Padding(
@@ -134,15 +137,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              buildFullNameTextField(),
+              buildFullNameTextField(fullNameTextHolder: fullNameTextHolder),
               SizedBox(
                 height: 15.0,
               ),
-              buildEmailTextField(),
+              buildEmailTextField(emailTextHolder: emailTextHolder),
               SizedBox(
                 height: 15.0,
               ),
-              buildPasswordTextField(),
+              buildPasswordTextField(passwordTextHolder: passwordTextHolder),
               _getForgetPasswordText(),
             ],
           ),
@@ -182,7 +185,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Container(
       width: double.infinity,
       child: kRoundButton(
-        onPressed: (){},
+        onPressed: (){
+          firebaseAuthInstance.signUpNewUserWithEmail(
+            userEmail: emailTextHolder.text,
+            userPassword: passwordTextHolder.text,
+            fullName: fullNameTextHolder.text
+
+          );
+        },
         buttonText: 'Sign Up',
         backgroundColor: textColor,
         textColor: Color(0xFF527DAA),
