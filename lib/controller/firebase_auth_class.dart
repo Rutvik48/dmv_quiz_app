@@ -21,8 +21,8 @@ class FirebaseAuthClass{
   static String userPicture;
 
 
-  void fillUserInformation() async {
-    await _setUserInformation();
+  Future<bool> fillUserInformation() async {
+    return await _setUserInformation();
   }
 
   String getFirstName(){
@@ -43,7 +43,7 @@ class FirebaseAuthClass{
     return userPicture != null ? userPicture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
   }
 
-  Future<void> _setUserInformation() async{
+  Future<bool> _setUserInformation() async{
 
     final FirebaseUser currentUser = await _auth.currentUser();
 
@@ -63,10 +63,12 @@ class FirebaseAuthClass{
       userEmail = currentUser.email;
       userPicture = currentUser.photoUrl;
 
+      return true;
       //return userFirstName;
     } else {
       print('User is not logged in or _auth.currentUser is null');
       //return null;
+      return false;
     }
 
     print('End of _getUserInformation()');
@@ -101,13 +103,35 @@ class FirebaseAuthClass{
     @required String fullName,
   }) async {
 
-    await _auth.createUserWithEmailAndPassword(email: userEmail, password: userPassword)
-    .catchError((errorCode){
-      print("Error Caught in function signInWithEmail(): ${errorCode.code}\n");
-      //print("2nd Error Caught in function signInWithEmail(): $detailedMessage\n");
+    String returnValue = 'null';
 
-      throw errorCode;
-    });
+    try{
+      await _auth.createUserWithEmailAndPassword(email: userEmail, password: userPassword)
+          .catchError((error){
+
+        returnValue = error.code;
+      }).then((value) async {
+        print('This is then inside signUpNewUserWithEmail() Value: $value');
+
+        if (value != null){
+          String userName = '';
+
+          var user = await FirebaseAuth.instance.currentUser();
+
+          UserUpdateInfo updateUser = UserUpdateInfo();
+          updateUser.displayName = fullName;
+          user.updateProfile(updateUser);
+
+          //firebase.auth().currentUser
+        }
+      }).whenComplete(() {
+        print('This is whenCompleted inside signUpNewUserWithEmail().');
+      });
+    }catch (error){
+      print('Error caught in signUpNewUserWithEmail()');
+    }
+
+    return returnValue;
   }
 
    Future<String> signInWithEmail({
@@ -121,13 +145,8 @@ class FirebaseAuthClass{
       await _auth
           .signInWithEmailAndPassword(email: userEmail, password: userPassword)
           .catchError((error) {
-        print("Error Caught in function signInWithEmail(): \n$error\n");
 
-        print("Type of error: ${error.runtimeType}");
         returnValue = error.code;
-
-        print("Error Code inside signItWithEmail try block ---> $returnValue");
-        //throw error;
       });
     } catch (error){
       //throw error.code;
@@ -137,10 +156,13 @@ class FirebaseAuthClass{
     return returnValue;
   }
 
-  void signOutGoogle() async{
+  Future<void> signOutGoogle() async{
     await googleSignIn.signOut();
+    print("Google User Sign Out");
 
-    print("User Sign Out");
+    await _auth.signOut();
+    print("Firebase User Sign Out");
+
   }
 
 
@@ -175,9 +197,15 @@ class FirebaseAuthClass{
       }
       break;
 
+      case ("ERROR_WEAK_PASSWORD"):{
+        print("There is an Network Issue. Ensure you're connected to Internet");
+        showAlert(context: context, alertTitle: 'Weak Password', alertText: "Password length must be six letters at least.");
+      }
+      break;
+
       default:{
         print("Some issue occurred while logging in.");
-        showAlert(context: context, alertTitle: "Can't Log In", alertText: "An Issue occurred while logging in. Please try again. ");
+        showAlert(context: context, alertTitle: "Can't Log In", alertText: "An Issue occurred while logging in. Please try again. \n$errorCode ");
       }
       break;
       //case

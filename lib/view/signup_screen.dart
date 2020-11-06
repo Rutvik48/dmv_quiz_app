@@ -185,14 +185,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Container(
       width: double.infinity,
       child: kRoundButton(
-        onPressed: (){
-          firebaseAuthInstance.signUpNewUserWithEmail(
+        onPressed: () async {
+          String status = await firebaseAuthInstance.signUpNewUserWithEmail(
             userEmail: emailTextHolder.text,
             userPassword: passwordTextHolder.text,
             fullName: fullNameTextHolder.text
-
           );
+
+          status != 'null'? firebaseAuthInstance.showError(errorCode: status, context: context): print("Sign up Successful.");
+
+
         },
+
         buttonText: 'Sign Up',
         backgroundColor: textColor,
         textColor: Color(0xFF527DAA),

@@ -3,6 +3,7 @@ import 'package:dmvquizapp/controller/firestore_class.dart';
 import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:dmvquizapp/view/signup_screen.dart';
+import 'package:dmvquizapp/view/welcom_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
@@ -195,20 +196,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
             try {
               email = filterText(emailTextHolder.text);
-              password = filterText(passwordTextHolder.text);
+              password = passwordTextHolder.text;
 
-              String status = await firebaseAuthInstance.signInWithEmail(userEmail: emailTextHolder.text, userPassword: passwordTextHolder.text)
+              String status = await firebaseAuthInstance.signInWithEmail(userEmail: email, userPassword: password)
                   .catchError((errorCode){
                     print('E Code:---------> $errorCode');
 
                     //firebaseAuthInstance.showError(errorCode, context)
-                  }).whenComplete(() {
-
-                    print("signInWithEmail whenComplete function");
-              });
+                  });
               status != 'null'? firebaseAuthInstance.showError(errorCode: status, context: context): print("Login Successful.");
 
-              print("Error Code:---------> $status");
+              Navigator.pushNamed(context, AppBottomNavigationBar.idToHomeScreen);
 
               print('Getting User"s email: ${await firebaseAuthInstance.getUserEmail()}');
               print('Email: ${emailTextHolder.text}');

@@ -17,6 +17,7 @@ class WelcomeScreen extends StatefulWidget {
 class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   static final firestoreSingleton = FireStoreClass();
   static final firebaseAuthInstance = FirebaseAuthClass();
+  bool userLoggedInState = false;
 
   AnimationController controller;
   Animation animation;
@@ -26,6 +27,7 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
     super.initState();
 
 
+    initialWork();
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     animation = ColorTween(begin: kLogoMatchingColor, end: kLogoBackgroundColor)
@@ -40,9 +42,14 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   }
 
   void initialWork() async{
-    //var user = await firebaseAuthInstance.getUserInformation();
+    //await firebaseAuthInstance.signOutGoogle();
+     userLoggedInState = await firebaseAuthInstance.fillUserInformation();
 
-    //user != null ?kShowToast(toastMessage: 'Welcome back \n$user'):null;
+     userLoggedInState ? print('User is logged in') : print('User not logged in');
+     setState(() {});
+
+     //var user = firebaseAuthInstance.getFirstName();
+    //userLoggedInState ? kShowToast(toastMessage: 'Hello $user'):null;
   }
 
   @override
@@ -88,7 +95,7 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
               ),
             ),
 
-            Expanded(
+            if (!userLoggedInState) Expanded(
               child: Center(
                 child: Container(
                   //color: Colors.yellow,
