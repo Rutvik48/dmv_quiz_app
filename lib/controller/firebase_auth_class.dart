@@ -45,7 +45,7 @@ class FirebaseAuthClass{
 
     //return _userLoginStatus == null ? _setUserInformation() : _userLoginStatus;
 
-    return getUserEmail() == '' ? false : true;
+    return _userLoginStatus;
 
     //return _userLoginStatus;
 }
@@ -56,9 +56,11 @@ class FirebaseAuthClass{
     return await _setUserInformation();
   }
    
-   
+   //Sets user information such as _userLoginStatus, name, email, picture.
   Future<bool> _setUserInformation() async{
 
+    //First checking if  the setting user info is required.
+    //if function is called earlier, then useremail won't be ''(empty)
     if (getUserEmail() == ''){
       final FirebaseUser currentUser = await _auth.currentUser();
 
@@ -77,6 +79,7 @@ class FirebaseAuthClass{
 
         _userEmail = currentUser.email;
         _userPicture = currentUser.photoUrl;
+        _userLoginStatus = true;
 
         return true;
         //return userFirstName;
