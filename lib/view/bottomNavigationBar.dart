@@ -1,3 +1,4 @@
+import 'package:dmvquizapp/controller/firebase_auth_class.dart';
 import 'package:dmvquizapp/view/about_screen.dart';
 import 'package:dmvquizapp/view/login_screen.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';
@@ -29,6 +30,8 @@ class AppBottomNavigationBar extends StatefulWidget {
 
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _currentIndex = AppBottomNavigationBar.currentIndex;
+  static final firebaseAuthInstance = FirebaseAuthClass();
+
   final List<Widget> _screens = [
     WelcomeScreen(),
     UserScreen(),
@@ -49,7 +52,26 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         selectedIndex: _currentIndex,
 
         onItemSelected: (index) {
-          setState(() => _currentIndex = index);
+
+          print ("This is index Number: $index");
+          if (index == 1) {
+            if (firebaseAuthInstance.getUserLoggedInStatus()){
+              setState((){
+                _currentIndex = index;
+              } );
+            } else {
+              //kShowToast(toastMessage: null);
+              kShowAlert(context: context, alertTitle: 'Sign In', alertText: 'Sign in required to access user page. \n');
+
+            }
+          } else if (index == 2){
+            kShowAlert(context: context, alertTitle: 'Please Hold On!!', alertText: 'Work in progress for about us page. \n');
+          }else {
+            setState((){
+              _currentIndex = index;
+            } );
+          }
+
         },
 
         items: <BottomNavyBarItem>[

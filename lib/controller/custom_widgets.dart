@@ -364,7 +364,7 @@ OutlineButton getSignUpLogInWithGoogleButton({
 }
 
 
-void showAlert({
+void kShowAlert({
   @required BuildContext context,
   @required String alertTitle,
   @required String alertText,

@@ -31,14 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     final firestoreSingleton = FireStoreClass();
 
-
     //firestoreSingleton.addUser(userEmail: 'email@123.com', firstName: 'First Name', lastName: 'Last Name');
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         //Removes keyboard when clicked outside of a text field
         FocusScope.of(context).requestFocus(new FocusNode());
       },
@@ -65,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
             //FlutterLogo(size: 150),
             //_getSignInHeader(),
             getEmailPswdTextFields(),
-            
+
             _getLoginAndGoogleSignUpButton(),
 
             getSignUpText(),
@@ -90,8 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   kCustomText(
-                    color: textColor,
-                      text: "Don't have an Account?", minFontSize: 20.0),
+                      color: textColor,
+                      text: "Don't have an Account?",
+                      minFontSize: 20.0),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, SignUpScreen.id);
@@ -122,18 +122,16 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             _buildLoginBtn(),
             kCustomText(
-              text: '--- OR ---',
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              minFontSize: 15.0
-            ),
+                text: '--- OR ---',
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                minFontSize: 15.0),
             Center(child: _signInWithGoogleButton()),
           ],
         ),
       ),
     );
   }
-
 
   Expanded getEmailPswdTextFields() {
     return Expanded(
@@ -143,90 +141,79 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(padding),
           child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            buildEmailTextField(emailTextHolder: emailTextHolder),
-            SizedBox(
-              height: 30.0,
-            ),
-            buildPasswordTextField(passwordTextHolder: passwordTextHolder),
-            _getForgetPasswordText(),
-          ],
-      ),
-        ),
-      ),
-    );
-  }
-
-  Widget _signInWithGoogleButton() {
-    
-    return getSignUpLogInWithGoogleButton(
-      textColor: textColor,
-      context: context,
-      signInOrUpText: 'Sign In',
-
-    );
-  }
-
-  Widget _getForgetPasswordText(){
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: GestureDetector(
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: kCustomText(
-            text: 'Forgot Password?',
-            fontWeight: FontWeight.w900,
-            color: textColor
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buildEmailTextField(emailTextHolder: emailTextHolder),
+              SizedBox(
+                height: 30.0,
+              ),
+              buildPasswordTextField(passwordTextHolder: passwordTextHolder),
+              _getForgetPasswordText(),
+            ],
           ),
         ),
       ),
     );
   }
 
+  Widget _signInWithGoogleButton() {
+    return getSignUpLogInWithGoogleButton(
+      textColor: textColor,
+      context: context,
+      signInOrUpText: 'Sign In',
+    );
+  }
+
+  Widget _getForgetPasswordText() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: GestureDetector(
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: kCustomText(
+              text: 'Forgot Password?',
+              fontWeight: FontWeight.w900,
+              color: textColor),
+        ),
+      ),
+    );
+  }
 
   Widget _buildLoginBtn() {
     return Container(
       width: double.infinity,
       child: kRoundButton(
-          onPressed: () async {
+        onPressed: () async {
+          String email;
+          String password;
 
-            String email;
-            String password;
+          try {
+            email = filterText(emailTextHolder.text);
+            password = passwordTextHolder.text;
 
-            try {
-              email = filterText(emailTextHolder.text);
-              password = passwordTextHolder.text;
+            String status = await firebaseAuthInstance.signInWithEmail(
+                userEmail: email, userPassword: password);
 
-              String status = await firebaseAuthInstance.signInWithEmail(userEmail: email, userPassword: password)
-                  .catchError((errorCode){
-                    print('E Code:---------> $errorCode');
-
-                    //firebaseAuthInstance.showError(errorCode, context)
-                  });
-              status != 'null'? firebaseAuthInstance.showError(errorCode: status, context: context): print("Login Successful.");
-
+            if (status != 'null') {
+              firebaseAuthInstance.showError(errorCode: status, context: context);
+            } else {
               Navigator.pushNamed(context, AppBottomNavigationBar.idToHomeScreen);
-
-              print('Getting User"s email: ${await firebaseAuthInstance.getUserEmail()}');
-              print('Email: ${emailTextHolder.text}');
-              print('Password: ${passwordTextHolder.text}');
-
-            } catch (error){
-              kShowToast(toastMessage: 'Fill all shown fields');
-              print('Error caught in buildLogInBtn');
-              print(error);
-
-            }finally {
-
+              print("Login Successful.");
             }
 
-
-
-          },
-          buttonText: 'LOGIN',
+            print(
+                'Getting User"s email: ${await firebaseAuthInstance.getUserEmail()}');
+            print('Email: ${emailTextHolder.text}');
+            print('Password: ${passwordTextHolder.text}');
+          } catch (error) {
+            kShowToast(toastMessage: 'Fill all shown fields');
+            print('Error caught in buildLogInBtn');
+            print(error);
+          } finally {}
+        },
+        buttonText: 'LOGIN',
         backgroundColor: textColor,
-          textColor: Color(0xFF527DAA),
+        textColor: Color(0xFF527DAA),
       ),
     );
   }

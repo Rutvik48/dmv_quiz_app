@@ -26,6 +26,7 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    print('1. This is user Login status: ${firebaseAuthInstance.getUserLoggedInStatus()}');
 
     initialWork();
     controller =
@@ -47,6 +48,8 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
 
      userLoggedInState ? print('User is logged in') : print('User not logged in');
      setState(() {});
+
+     print('2. This is user Login status: ${firebaseAuthInstance.getUserLoggedInStatus()}');
 
      //var user = firebaseAuthInstance.getFirstName();
     //userLoggedInState ? kShowToast(toastMessage: 'Hello $user'):null;

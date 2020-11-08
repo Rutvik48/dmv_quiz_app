@@ -186,7 +186,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       width: double.infinity,
       child: kRoundButton(
         onPressed: () async {
-          String status = await firebaseAuthInstance.signUpNewUserWithEmail(
+          String status = await firebaseAuthInstance.createNewUserWithEmail(
             userEmail: emailTextHolder.text,
             userPassword: passwordTextHolder.text,
             fullName: fullNameTextHolder.text
