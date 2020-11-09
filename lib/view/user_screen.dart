@@ -1,5 +1,6 @@
 import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
@@ -10,26 +11,12 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-
   FirebaseAuthClass firebaseAuthSingleton = FirebaseAuthClass();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    print('fetching userinfo in init');
-    firebaseAuthSingleton.fillUserInformation();
-    print('Last line of init');
-
-
   }
-  //
-  // void doInitialSetup() async {
-  //
-  //   await
-  //
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +25,16 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  Widget _buildBody(){
+  Widget _buildBody() {
     return SafeArea(
       child: Center(
         child: Column(
-
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
+            // SizedBox(
+            //   height: 50.0,
+            //
+            // ),
             _getUserInfoWidget(),
 
             SizedBox(
@@ -55,7 +44,6 @@ class _UserScreenState extends State<UserScreen> {
                 color: Colors.black12,
               ),
             ),
-
             Expanded(
               flex: 3,
               child: Container(
@@ -63,8 +51,6 @@ class _UserScreenState extends State<UserScreen> {
                 color: Colors.grey,
               ),
             ),
-
-
           ],
         ),
       ),
@@ -73,66 +59,76 @@ class _UserScreenState extends State<UserScreen> {
 
   Expanded _getUserInfoWidget() {
     return Expanded(
-            flex: 1,
-            child: Container(
-              child: Row(
+      flex: 1,
+      child: Container(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                crossAxisAlignment: CrossAxisAlignment.center,
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            getUserImageWidget(),
 
-                children: [
-                  getUserImageWidget(),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: (){
+                            kShowAlert(
+                                context: context,
+                                alertTitle: 'Sign Out',
+                                alertText: 'Would you like to sign out?',
+                              mainButtonOnTap: (){
+                                  firebaseAuthInstance.signOutUser();
+                                  Navigator.pushNamed(context, AppBottomNavigationBar.idToHomeScreen);
+                              }
 
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            kCustomText(
-                              text: '',//firebaseAuthSingleton.getUserEmail(),
-                              fontWeight: FontWeight.bold,
+                            );
+                          },
+                          child: kCustomText(
+                              text: 'Sign out?', //firebaseAuthSingleton.getUserEmail(),
+                              fontWeight: FontWeight.w100,
                               color: kLogoMatchingColor,
-                              minFontSize: 20.0
-                            ),
-                            kCustomText(
-                                text: firebaseAuthSingleton.getFirstName(),
-                                fontWeight: FontWeight.bold,
-                                color: kLogoMatchingColor,
-                                minFontSize: 20.0
-                            ),
-                            kCustomText(
-                                text: 'click here to change password.',
-                                fontWeight: FontWeight.w100,
-                                color: kLogoMatchingColor,
-                                minFontSize: 10.0
-                            ),
-                          ],
+                              minFontSize: 15.0),
                         ),
                       ),
-                    ),
+                      kCustomText(
+                          text: firebaseAuthSingleton.getFirstName(),
+                          fontWeight: FontWeight.bold,
+                          color: kLogoMatchingColor,
+                          minFontSize: 20.0),
+                      kCustomText(
+                          text: 'click here to change password.',
+                          fontWeight: FontWeight.w100,
+                          color: kLogoMatchingColor,
+                          minFontSize: 10.0),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 
   Widget getUserImageWidget() {
     return Container(
-                    width: 150.0,
-                    height: 150.0,
-                    decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: new DecorationImage(
-                            fit: BoxFit.fill,
-                            image: new NetworkImage(
-                                firebaseAuthSingleton.getUserPicture())
-                        )
-                    ));
+        width: 150.0,
+        height: 150.0,
+        decoration: new BoxDecoration(
+            shape: BoxShape.circle,
+            image: new DecorationImage(
+                fit: BoxFit.fill,
+                image:
+                    new NetworkImage(firebaseAuthSingleton.getUserPicture()))));
   }
 }
-

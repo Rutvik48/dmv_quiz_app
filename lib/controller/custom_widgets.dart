@@ -204,8 +204,6 @@ RaisedButton kNextButton( {@required Function onPressed}) {
   );
 }
 
-
-
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
   fontFamily: 'OpenSans',
@@ -369,7 +367,8 @@ void kShowAlert({
   @required String alertTitle,
   @required String alertText,
   String mainButtonText='Okay',
-  
+  @required Function mainButtonOnTap,
+  //Function mainButtonOnTap = null,
 }) {
   showDialog<void>(
     context: context,
@@ -388,9 +387,7 @@ void kShowAlert({
         actions: <Widget>[
           FlatButton(
             child: Text(mainButtonText),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: mainButtonOnTap,
           ),
 
           if(false) FlatButton(

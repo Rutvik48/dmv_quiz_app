@@ -167,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _getForgetPasswordText() {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
+      //TODO: Implement onTap, or move it to custom_widget.dart
       child: GestureDetector(
         child: Align(
           alignment: Alignment.bottomRight,

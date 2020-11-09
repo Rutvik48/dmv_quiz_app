@@ -19,7 +19,7 @@ class FirebaseAuthClass{
   static String _userLastName;
   static String _userEmail;
   static String _userPicture;
-  static bool _userLoginStatus;
+  static bool _userLoginStatus = false;
 
 
   
@@ -189,12 +189,23 @@ class FirebaseAuthClass{
 
 
   //sign out method to sign out from googleSignIn and firebase auth
-  Future<void> signOutGoogle() async{
+  Future<void> signOutUser() async{
     await googleSignIn.signOut();
 
     await _auth.signOut();
 
-    _userLoginStatus=false;
+    _resetUserInfo();
+  }
+
+
+  void _resetUserInfo() {
+    
+    _userEmail='';
+    _userFirstName = '';
+    _userLastName = '';
+    _userPicture = '';
+
+    _userLoginStatus = false;
   }
 
 
@@ -205,19 +216,19 @@ class FirebaseAuthClass{
     switch (errorCode) {
       case "ERROR_INVALID_EMAIL":{
         print('Check your Email');
-        kShowAlert(context: context, alertTitle: 'Invalid Email', alertText: "Check your email.");
+        kShowAlert(context: context, alertTitle: 'Invalid Email', alertText: "Check your email.", mainButtonOnTap: (){Navigator.of(context).pop();});
       }
       break;
 
       case "ERROR_USER_NOT_FOUND":{
         print('User is not registered. Please check your email');
-        kShowAlert(context: context, alertTitle: 'Email Not Found', alertText: "Email is not found.");
+        kShowAlert(context: context, alertTitle: 'Email Not Found', alertText: "Email is not found.", mainButtonOnTap: (){Navigator.of(context).pop();});
       }
       break;
 
       case ("ERROR_WRONG_PASSWORD"):{
         print('Password is wrong');
-        kShowAlert(context: context, alertTitle: 'Check Details', alertText: "Email or Password is wrong");
+        kShowAlert(context: context, alertTitle: 'Check Details', alertText: "Email or Password is wrong", mainButtonOnTap: (){Navigator.of(context).pop();});
       }
       break;
 
@@ -226,53 +237,23 @@ class FirebaseAuthClass{
 
       case ("ERROR_NETWORK_REQUEST_FAILED"):{
         print("There is an Network Issue. Ensure you're connected to Internet");
-        kShowAlert(context: context, alertTitle: 'Network Issue', alertText: "Check you're connected to Internet and try again.");
+        kShowAlert(context: context, alertTitle: 'Network Issue', alertText: "Check you're connected to Internet and try again.", mainButtonOnTap: (){Navigator.of(context).pop();});
       }
       break;
 
       case ("ERROR_WEAK_PASSWORD"):{
         print("There is an Network Issue. Ensure you're connected to Internet");
-        kShowAlert(context: context, alertTitle: 'Weak Password', alertText: "Password length must be six letters at least.");
+        kShowAlert(context: context, alertTitle: 'Weak Password', alertText: "Password length must be six letters at least.", mainButtonOnTap: (){Navigator.of(context).pop();});
       }
       break;
 
       default:{
         print("Some issue occurred while logging in.");
-        kShowAlert(context: context, alertTitle: "Can't Log In", alertText: "An Issue occurred while logging in. Please try again. \n$errorCode ");
+        kShowAlert(context: context, alertTitle: "Can't Log In", alertText: "An Issue occurred while logging in. Please try again. \n$errorCode ", mainButtonOnTap: (){Navigator.of(context).pop();});
       }
       break;
       //case
       //default:
     }
   }
-  // void showError (error: Error?,errorMsg: AuthErrorCode,screen: UIViewController) {
-  //
-  // switch errorMsg {
-  //
-  // case .networkError:
-  // createUIalert("Network Error.", screen)
-  // break
-  // case .userNotFound:
-  // createUIalert("Email Not Found!", screen)
-  // break
-  // case .wrongPassword:
-  // createUIalert("Email or Pasword is wrong", screen)
-  // break
-  // case .tooManyRequests:
-  // createUIalert("too many request", screen)
-  // break
-  // case .invalidEmail:
-  // createUIalert("Invalid Email", screen)
-  // break
-  // case .emailAlreadyInUse:
-  // createUIalert("Email is already in use.", screen)
-  // break
-  // case .weakPassword:
-  // createUIalert("weak password", screen)
-  // break
-  // default:
-  // createUIalert("Error occured. Please try again.", screen)
-  // }
-  // }
-
 }

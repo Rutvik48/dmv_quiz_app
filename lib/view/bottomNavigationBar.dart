@@ -61,11 +61,21 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
               } );
             } else {
               //kShowToast(toastMessage: null);
-              kShowAlert(context: context, alertTitle: 'Sign In', alertText: 'Sign in required to access user page. \n');
+              kShowAlert(
+                  context: context,
+                  alertTitle: 'Sign In',
+                  alertText: 'Sign in required to access user page. \n',
+                  mainButtonOnTap: (){Navigator.of(context).pop();},
+              );
 
             }
           } else if (index == 2){
-            kShowAlert(context: context, alertTitle: 'Please Hold On!!', alertText: 'Work in progress for about us page. \n');
+            kShowAlert(
+                context: context,
+                alertTitle: 'Please Hold On!!',
+                alertText: 'Work in progress for about us page. \n',
+                mainButtonOnTap: (){Navigator.of(context).pop();}
+            );
           }else {
             setState((){
               _currentIndex = index;
