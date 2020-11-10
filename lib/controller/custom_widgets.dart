@@ -328,7 +328,6 @@ OutlineButton getSignUpLogInWithGoogleButton({
         firestoreSingleton.addUser(
             userEmail: await firebaseAuthInstance.getUserEmail(),
             firstName: firebaseAuthInstance.getFirstName(),
-            lastName: firebaseAuthInstance.getLastName(),
           userPicture: firebaseAuthInstance.getUserPicture(),
         );
 
@@ -368,6 +367,11 @@ void kShowAlert({
   @required String alertText,
   String mainButtonText='Okay',
   @required Function mainButtonOnTap,
+  bool showTextField = false,
+  Function textFieldOnTap,
+  TextEditingController textFieldTextController,
+  String textFieldText,
+
   //Function mainButtonOnTap = null,
 }) {
   showDialog<void>(
@@ -380,6 +384,12 @@ void kShowAlert({
           child: ListBody(
             children: <Widget>[
               Text(alertText),
+              if (showTextField) TextField(
+                controller: textFieldTextController,
+                onSubmitted: (String userInput){
+                },
+
+              ),
               //Text('Yre you sure about this?.'),
             ],
           ),
@@ -402,5 +412,25 @@ void kShowAlert({
         ],
       );
     },
+  );
+}
+
+Widget kClickableText({
+  @required BuildContext context,
+  @required Function onTap,
+  @required String text,
+  double fontSize = 15.0,
+  FontWeight fontWeight = FontWeight.w100,
+  Color color = kLogoMatchingColor,
+
+
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: kCustomText(
+        text: text, //firebaseAuthSingleton.getUserEmail(),
+        fontWeight: fontWeight,
+        color: color,
+        minFontSize: fontSize),
   );
 }

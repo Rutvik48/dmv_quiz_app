@@ -12,10 +12,12 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   FirebaseAuthClass firebaseAuthSingleton = FirebaseAuthClass();
+  TextEditingController textFieldText;
 
   @override
   void initState() {
     super.initState();
+    textFieldText = TextEditingController (text: '${firebaseAuthSingleton.getFirstName()}');
   }
 
   @override
@@ -67,7 +69,6 @@ class _UserScreenState extends State<UserScreen> {
 
           children: [
             getUserImageWidget(),
-
             Expanded(
               flex: 2,
               child: Container(
@@ -77,33 +78,38 @@ class _UserScreenState extends State<UserScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: GestureDetector(
-                          onTap: (){
-                            kShowAlert(
-                                context: context,
-                                alertTitle: 'Sign Out',
-                                alertText: 'Would you like to sign out?',
-                              mainButtonOnTap: (){
-                                  firebaseAuthInstance.signOutUser();
-                                  Navigator.pushNamed(context, AppBottomNavigationBar.idToHomeScreen);
-                              }
+                      buildSignOutText(),
 
-                            );
-                          },
-                          child: kCustomText(
-                              text: 'Sign out?', //firebaseAuthSingleton.getUserEmail(),
-                              fontWeight: FontWeight.w100,
-                              color: kLogoMatchingColor,
-                              minFontSize: 15.0),
-                        ),
+                      kClickableText(
+                        context: context,
+                        text: '${firebaseAuthSingleton.getFirstName()}',
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        onTap: () {
+                          kShowAlert(
+                              context: context,
+                              alertTitle: 'User Name',
+                              alertText: 'Would you like to change user name?',
+                              mainButtonText: 'Change Name',
+                              showTextField: true,
+                              textFieldTextController: textFieldText,
+                              mainButtonOnTap: () {
+                                print('Test------------------');
+                                print('2 This is the full name ----> ${textFieldText.text}');
+                                firebaseAuthSingleton.setUserName(textFieldText.text);
+
+                                //firebaseAuthInstance.signOutUser();
+                                //Navigator.pushNamed(context, AppBottomNavigationBar.idToHomeScreen);
+                              });
+                        },
+
+
                       ),
-                      kCustomText(
-                          text: firebaseAuthSingleton.getFirstName(),
-                          fontWeight: FontWeight.bold,
-                          color: kLogoMatchingColor,
-                          minFontSize: 20.0),
+                      // kCustomText(
+                      //     text: '${firebaseAuthSingleton.getFirstName()} ${firebaseAuthSingleton.getLastName()}',
+                      //     fontWeight: FontWeight.bold,
+                      //     color: kLogoMatchingColor,
+                      //     minFontSize: 20.0),
                       kCustomText(
                           text: 'click here to change password.',
                           fontWeight: FontWeight.w100,
@@ -116,6 +122,29 @@ class _UserScreenState extends State<UserScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Align buildSignOutText() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: kClickableText(
+        text: 'Sign out?',
+        context: context,
+        fontSize: 15.0,
+        onTap: () {
+          kShowAlert(
+              context: context,
+              alertTitle: 'Sign Out',
+              alertText: 'Would you like to sign out?',
+              mainButtonText: 'Yes',
+              mainButtonOnTap: () async {
+                await firebaseAuthInstance.signOutUser();
+                Navigator.pushNamed(
+                    context, AppBottomNavigationBar.idToHomeScreen);
+              });
+        },
       ),
     );
   }

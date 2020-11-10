@@ -13,10 +13,9 @@ class FirebaseAuthClass{
   FirebaseAuthClass._internal();
   static final FirebaseAuthClass _singleton = FirebaseAuthClass._internal();
   factory FirebaseAuthClass() => _singleton;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  static String _userFirstName;
-  static String _userLastName;
+  static String _userFullName;
   static String _userEmail;
   static String _userPicture;
   static bool _userLoginStatus = false;
@@ -25,12 +24,9 @@ class FirebaseAuthClass{
   
   ///Getters
   String getFirstName(){
-    return _userFirstName != null ? _userFirstName : '';
+    return _userFullName != null ? _userFullName : '';
   }
 
-  String getLastName(){
-    return _userLastName != null ? _userLastName : '';
-  }
   String getUserEmail() {
 
     //await _setUserInformation();
@@ -42,12 +38,8 @@ class FirebaseAuthClass{
   }
 
   bool getUserLoggedInStatus() {
-
-    //return _userLoginStatus == null ? _setUserInformation() : _userLoginStatus;
-
     return _userLoginStatus;
 
-    //return _userLoginStatus;
 }
 
   
@@ -68,15 +60,8 @@ class FirebaseAuthClass{
       if (currentUser != null){
 
         if (currentUser.displayName != null){
-          List<String> temp = currentUser.displayName.split(' ');
-          if (temp.length > 1){
-            _userFirstName =  temp[0];
-            _userLastName = temp[1];
-          } else{
-            _userFirstName =  temp[0];
-          }
+          _userFullName = currentUser.displayName;
         }
-
         _userEmail = currentUser.email;
         _userPicture = currentUser.photoUrl;
         _userLoginStatus = true;
@@ -100,7 +85,7 @@ class FirebaseAuthClass{
   //Method used to sign in to Firebase Auth using sign in with google 
   Future<String> signInWithGoogle() async {
 
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -138,13 +123,13 @@ class FirebaseAuthClass{
         print('This is then inside signUpNewUserWithEmail() Value: $value');
 
         if (value != null){
-          String userName = '';
 
-          var user = await FirebaseAuth.instance.currentUser();
-
-          UserUpdateInfo updateUser = UserUpdateInfo();
-          updateUser.displayName = fullName;
-          user.updateProfile(updateUser);
+          setUserName(fullName);
+          // var user = await FirebaseAuth.instance.currentUser();
+          //
+          // UserUpdateInfo updateUser = UserUpdateInfo();
+          // updateUser.displayName = fullName;
+          // user.updateProfile(updateUser);
 
           //firebase.auth().currentUser
         }
@@ -158,6 +143,20 @@ class FirebaseAuthClass{
     return returnValue;
   }
 
+  Future<bool> setUserName (String userName) async {
+
+    try {
+      var user = await FirebaseAuth.instance.currentUser();
+
+      UserUpdateInfo updateUser = UserUpdateInfo();
+      updateUser.displayName = userName;
+      user.updateProfile(updateUser);
+      print("Username changed to : $userName");
+      return true;
+    } catch (error){
+      return false;
+    }
+  }
   
   //Sign in method
    Future<String> signInWithEmail({
@@ -190,7 +189,7 @@ class FirebaseAuthClass{
 
   //sign out method to sign out from googleSignIn and firebase auth
   Future<void> signOutUser() async{
-    await googleSignIn.signOut();
+    await _googleSignIn.signOut();
 
     await _auth.signOut();
 
@@ -201,8 +200,7 @@ class FirebaseAuthClass{
   void _resetUserInfo() {
     
     _userEmail='';
-    _userFirstName = '';
-    _userLastName = '';
+    _userFullName = '';
     _userPicture = '';
 
     _userLoginStatus = false;

@@ -149,7 +149,6 @@ class FireStoreClass {
   void addUser({
     @required String userEmail,
     @required String firstName,
-    @required String lastName,
     String userPicture
   }){
 
@@ -158,8 +157,8 @@ class FireStoreClass {
     collection(userEmail).
     document(FIREBASE_USER_DETAIL_DOCUMENT).setData(
       {
-        FIREBASE_USER_DETAIL_FIELD_FIRST_NAME: firstName,
-        FIREBASE_USER_DETAIL_FIELD_LAST_NAME: lastName,
+        FIREBASE_USER_DETAIL_FIELD_FULL_NAME: firstName,
+        //FIREBASE_USER_DETAIL_FIELD_LAST_NAME: lastName,
         FIREBASE_USER_DETAIL_FIELD_USER_PIC: userPicture,
       }
     );
