@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:dmvquizapp/controller/constants.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_storage_class.dart';
 import 'package:dmvquizapp/controller/firebase_auth_class.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -33,10 +37,7 @@ class _UserScreenState extends State<UserScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // SizedBox(
-            //   height: 50.0,
-            //
-            // ),
+
             _getUserInfoWidget(),
 
             SizedBox(
@@ -150,14 +151,28 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Widget getUserImageWidget() {
-    return Container(
-        width: 150.0,
-        height: 150.0,
-        decoration: new BoxDecoration(
-            shape: BoxShape.circle,
-            image: new DecorationImage(
-                fit: BoxFit.fill,
-                image:
-                    new NetworkImage(firebaseAuthSingleton.getUserPicture()))));
+    return GestureDetector(
+      onTap: () async {
+        print("Opening Gallery");
+        PickedFile imageFile = await ImagePicker().getImage(source: ImageSource.gallery);
+        print("Image path: ${imageFile.path}");
+        File image = File(imageFile.path);
+
+
+        FirebaseStorageClass firebaseStorageClass = FirebaseStorageClass();
+        String userURL = await firebaseStorageClass.uploadFile(image);
+        print("Here is new URL: $userURL");
+        firebaseAuthSingleton.setUserImage(userURL);
+      },
+      child: Container(
+          width: 150.0,
+          height: 150.0,
+          decoration: new BoxDecoration(
+              shape: BoxShape.circle,
+              image: new DecorationImage(
+                  fit: BoxFit.fill,
+                  image:
+                      new NetworkImage(firebaseAuthSingleton.getUserPicture())))),
+    );
   }
 }

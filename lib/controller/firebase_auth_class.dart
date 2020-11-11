@@ -19,10 +19,16 @@ class FirebaseAuthClass{
   static String _userEmail;
   static String _userPicture;
   static bool _userLoginStatus = false;
+  static String _userID = '';
 
 
   
   ///Getters
+
+  String getUserID(){
+    return _userID;
+  }
+
   String getFirstName(){
     return _userFullName != null ? _userFullName : '';
   }
@@ -54,7 +60,7 @@ class FirebaseAuthClass{
     //First checking if  the setting user info is required.
     //if function is called earlier, then useremail won't be ''(empty)
     if (getUserEmail() == ''){
-      final FirebaseUser currentUser = await _auth.currentUser();
+      final User currentUser = await _auth.currentUser;
 
       //currentuser would be null if user is not logged in.
       if (currentUser != null){
@@ -63,8 +69,9 @@ class FirebaseAuthClass{
           _userFullName = currentUser.displayName;
         }
         _userEmail = currentUser.email;
-        _userPicture = currentUser.photoUrl;
+        _userPicture = currentUser.photoURL;
         _userLoginStatus = true;
+        _userID = currentUser.uid;
 
         return true;
         //return userFirstName;
@@ -77,7 +84,7 @@ class FirebaseAuthClass{
       return true;
     }
 
-    print('End of _getUserInformation()');
+    //print('End of _getUserInformation()');
   }
 
 
@@ -93,13 +100,13 @@ class FirebaseAuthClass{
       idToken: googleSignInAuthentication.idToken,
     );
 
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
+    final UserCredential authResult = await _auth.signInWithCredential(credential);
+    final User user = authResult.user;
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
-    final FirebaseUser currentUser = await _auth.currentUser();
+    final User currentUser = _auth.currentUser;
     assert(user.uid == currentUser.uid);
 
     return 'signInWithGoogle succeeded: $user';
@@ -146,12 +153,28 @@ class FirebaseAuthClass{
   Future<bool> setUserName (String userName) async {
 
     try {
-      var user = await FirebaseAuth.instance.currentUser();
+      var user = FirebaseAuth.instance.currentUser;
 
-      UserUpdateInfo updateUser = UserUpdateInfo();
-      updateUser.displayName = userName;
-      user.updateProfile(updateUser);
+
+      User updateUser = User as User;
+      updateUser.updateProfile(displayName: userName);
+      user.updateProfile();
       print("Username changed to : $userName");
+      return true;
+    } catch (error){
+      return false;
+    }
+  }
+
+  Future<bool> setUserImage (String userImageUrl) async {
+
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+
+      User updateUser = User as User;
+      updateUser.updateProfile(photoURL: userImageUrl);
+      user.updateProfile();
+      print("URL changed to : $userImageUrl");
       return true;
     } catch (error){
       return false;
@@ -202,7 +225,7 @@ class FirebaseAuthClass{
     _userEmail='';
     _userFullName = '';
     _userPicture = '';
-
+    _userID = '';
     _userLoginStatus = false;
   }
 

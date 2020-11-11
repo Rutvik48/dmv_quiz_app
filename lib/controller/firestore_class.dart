@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 //This class holds methods to make changes and retrieve data from Firestore Cloud Database
 class FireStoreClass {
-  final firestoreInstance = Firestore.instance;
+  final firestoreInstance = FirebaseFirestore.instance;
   static final FireStoreClass _singleton = FireStoreClass._internal();
   factory FireStoreClass() => _singleton;
   FireStoreClass._internal();
@@ -21,10 +21,10 @@ class FireStoreClass {
     QuerySnapshot questions;
     questions = await firestoreInstance
         .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
-        .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
+        .doc(FIREBASE_MAIN_QUIZ_DOCUMENT)
         ///TODO: Change this collection string to user selected topic
         .collection(selectedTopic)
-        .getDocuments();
+        .get();
 
     print(questions);
 
@@ -35,53 +35,24 @@ class FireStoreClass {
     Map questionBank = new Map<int, Map<String, dynamic>>();
 
     int counter = 0;
-    for (var document in querySnapshot.documents) {
+    print('Filling Question Bank.');
+    for (var document in querySnapshot.docs) {
       if (document[FIREBASE_FIELD_QUESTION] != null) {
-        questionBank.putIfAbsent(counter, () => document.data);
+        //print(document.data());
+        questionBank.putIfAbsent(counter, () => document.data());
         counter++;
       }
     }
 
-//    questionBank.forEach((key, value) {
-//      print("Key: $key\n\n");
-//
-//      print("Value $value\n\n");
-//    });
-
     return questionBank;
   }
-
-  // Future<Map> getTopics() async {
-  //
-  //   DocumentSnapshot documents;
-  //   documents = await firestoreInstance
-  //       .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
-  //       .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
-  //       .get();
-  //
-  //   return changeTopicsIntoMap(documentSnapshot: documents, topicString: 'topics');
-  // }
-  //
-  // Map changeTopicsIntoMap({@required DocumentSnapshot documentSnapshot, @required String topicString}) {
-  //   Map topicMap = new Map<String, String>();
-  //
-  //   int counter = 0;
-  //   documentSnapshot.data[topicString].forEach((key, value) {
-  //     topicMap[key] = value;
-  //   });
-  //
-  //   print(topicMap);
-  //
-  //   return topicMap;
-  // }
-
 
   Future<Map> getTopics() async {
 
     DocumentSnapshot documents;
     documents = await firestoreInstance
         .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
-        .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
+        .doc(FIREBASE_MAIN_QUIZ_DOCUMENT)
         .get();
 
     return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_MAIN_TOPIC_ARRAY);
@@ -94,29 +65,14 @@ class FireStoreClass {
     print ('Selected Topic in getSubTopics $selectedTopic');
     documents = await firestoreInstance
         .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
-        .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
+        .doc(FIREBASE_MAIN_QUIZ_DOCUMENT)
         .collection(selectedTopic)
-        .document(FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT)
+        .doc(FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT)
         .get();
 
-    // var test = await firestoreInstance.collection(FIREBASE_MAIN_QUIZ_COLLECTION).document(FIREBASE_MAIN_QUIZ_DOCUMENT).collection(selectedTopic).getDocuments();
-    // print(test);
-    //
-    // var test2 = await firestoreInstance
-    //     .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
-    //     .document(FIREBASE_MAIN_QUIZ_DOCUMENT)
-    //     .collection(selectedTopic)
-    //     .document(FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT)
-    //     .get();
-    // print(test2);
-
-    // documents = await firestoreInstance.collection('question_main_collection/new_york/1').document('sub-topics').get().whenComplete((){
-    //   print(documents);
-    //   return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT);
-    // });
-
+    //print(documents);
     return changeSubTopicsIntoMap(documentSnapshot: documents);
-    print(documents);
+
   }
 
 
@@ -124,13 +80,16 @@ class FireStoreClass {
     Map topicMap = new Map<String, String>();
 
     print(documentSnapshot.data);
-    int counter = 0;
+
     if (trueForTopic){
-      documentSnapshot.data[topicString].forEach((key, value) {
-        topicMap[key] = value;
+      documentSnapshot.data().forEach((key, value) {
+        if (key == topicString){
+          value.forEach((key, value) {
+            topicMap[key] = value;
+        });}
       });
     } else {
-      documentSnapshot.data.forEach((key, value) {
+      documentSnapshot.data().forEach((key, value) {
         topicMap[key] = value;
       });
     }
@@ -153,9 +112,9 @@ class FireStoreClass {
   }){
 
     firestoreInstance.collection(FIREBASE_MAIN_USER_COLLECTION).
-    document(FIREBASE_MAIN_USER_DOCUMENT).
+    doc(FIREBASE_MAIN_USER_DOCUMENT).
     collection(userEmail).
-    document(FIREBASE_USER_DETAIL_DOCUMENT).setData(
+    doc(FIREBASE_USER_DETAIL_DOCUMENT).set(
       {
         FIREBASE_USER_DETAIL_FIELD_FULL_NAME: firstName,
         //FIREBASE_USER_DETAIL_FIELD_LAST_NAME: lastName,
@@ -185,7 +144,7 @@ class FireStoreClass {
 
 
   void addData() {
-    final firestoreInstance = Firestore.instance;
+    final firestoreInstance = FirebaseFirestore.instance;
     print("Add Data is called!!");
     firestoreInstance.collection(FIREBASE_MAIN_QUIZ_COLLECTION).add({
       "name": "john",
@@ -193,7 +152,7 @@ class FireStoreClass {
       "email": "example@example.com",
       "address": {"street": "street 24", "city": "new york"}
     }).then((value) {
-      print(value.documentID);
+      print(value.id);
     });
   }
 }
