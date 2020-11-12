@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dmvquizapp/controller/firebase_constants.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_constants.dart';
 import 'package:dmvquizapp/view/quiz_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:dmvquizapp/controller/firebase/firestore_class.dart';
 
 class Quiz {
   static final Quiz _singleton = Quiz._internal();

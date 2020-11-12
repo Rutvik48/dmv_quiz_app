@@ -7,7 +7,9 @@ const FIREBASE_QUIZ_MAIN_TOPIC_ARRAY = 'main_topic';
 const FIREBASE_QUIZ_SUB_TOPICS_DOCUMENT = 'sub-topics';
 
 //const FIREBASE_PATH_TO_TOPICS = '$FIREBASE_MAIN_QUIZ_COLLECTION/ny/topics';
-
+//Used to keep track of if total number count needs to increase or not.
+const FIREBASE_TOTAL_NUMBER_OF_QUESTIONS_STATUS = 'isTotalNumberOfQuestionUpToDate';
+const FIREBASE_TOTAL_NUMBER_OF_QUESTIONS = 'totalNumberOfQuestions';
 
 //Documents Keys
 const FIREBASE_FIELD_QUESTION = 'Question';

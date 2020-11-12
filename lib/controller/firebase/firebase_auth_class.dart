@@ -20,11 +20,8 @@ class FirebaseAuthClass{
   static String _userPicture;
   static bool _userLoginStatus = false;
   static String _userID = '';
-
-
   
   ///Getters
-
   String getUserID(){
     return _userID;
   }
@@ -50,6 +47,22 @@ class FirebaseAuthClass{
 
   
   ///Setters
+
+  //Setting values for local variables
+  void _setUserEmail (String userEmail){
+    _userEmail = userEmail;
+  }
+  void _setUserID (String userID){
+    _userID = userID;
+  }
+  void _setLoginStatus (bool loginStatus){
+    _userLoginStatus = loginStatus;
+  }
+  void _setUserPictureUrl (String pictureUrl){
+    _userPicture = pictureUrl;
+  }
+
+  //this method is called from welcome screen to call _setUserInformation()
   Future<bool> fillUserInformation() async {
     return await _setUserInformation();
   }
@@ -62,16 +75,16 @@ class FirebaseAuthClass{
     if (getUserEmail() == ''){
       final User currentUser = await _auth.currentUser;
 
-      //currentuser would be null if user is not logged in.
+      //currentUser would be null if user is not logged in.
       if (currentUser != null){
 
         if (currentUser.displayName != null){
           _userFullName = currentUser.displayName;
         }
-        _userEmail = currentUser.email;
-        _userPicture = currentUser.photoURL;
-        _userLoginStatus = true;
-        _userID = currentUser.uid;
+        _setUserEmail(currentUser.email);
+        _setUserPictureUrl(currentUser.photoURL);
+        _setUserID(currentUser.uid);
+        _setLoginStatus(true);
 
         return true;
         //return userFirstName;
@@ -130,15 +143,7 @@ class FirebaseAuthClass{
         print('This is then inside signUpNewUserWithEmail() Value: $value');
 
         if (value != null){
-
-          setUserName(fullName);
-          // var user = await FirebaseAuth.instance.currentUser();
-          //
-          // UserUpdateInfo updateUser = UserUpdateInfo();
-          // updateUser.displayName = fullName;
-          // user.updateProfile(updateUser);
-
-          //firebase.auth().currentUser
+          changeUserName(fullName);
         }
       }).whenComplete(() {
         print('This is whenCompleted inside signUpNewUserWithEmail().');
@@ -150,12 +155,13 @@ class FirebaseAuthClass{
     return returnValue;
   }
 
-  Future<bool> setUserName (String userName) async {
+
+  ///Change Methods - Used to make changes to current data stored in FirebaseAuth
+  //Method used to change user name (displayName)
+  Future<bool> changeUserName (String userName) async {
 
     try {
       var user = FirebaseAuth.instance.currentUser;
-
-
       User updateUser = User as User;
       updateUser.updateProfile(displayName: userName);
       user.updateProfile();
@@ -166,17 +172,17 @@ class FirebaseAuthClass{
     }
   }
 
-  Future<bool> setUserImage (String userImageUrl) async {
+  //Method used to change user image
+  Future<bool> changeUserImage (String userImageUrl) async {
 
     try {
       var user = FirebaseAuth.instance.currentUser;
-
-      User updateUser = User as User;
-      updateUser.updateProfile(photoURL: userImageUrl);
-      user.updateProfile();
+      user.updateProfile(photoURL: userImageUrl);
       print("URL changed to : $userImageUrl");
+      _setUserPictureUrl(userImageUrl);
       return true;
     } catch (error){
+      print ("An error thrown in setUserImage: $error");
       return false;
     }
   }

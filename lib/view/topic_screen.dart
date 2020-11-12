@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
 import 'quiz_screen.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
-import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:dmvquizapp/controller/firebase/firestore_class.dart';
 import 'package:kumi_popup_window/kumi_popup_window.dart';
 
 class TopicScreen extends StatefulWidget {

@@ -1,10 +1,10 @@
-import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_auth_class.dart';
 import 'package:dmvquizapp/view/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
-import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:dmvquizapp/controller/firebase/firestore_class.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -45,6 +45,8 @@ class _State extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   void initialWork() async{
     //await firebaseAuthInstance.signOutGoogle();
      userLoggedInState = await firebaseAuthInstance.fillUserInformation();
+
+     await firestoreSingleton.countTotalNumberOfQuestion();
 
      userLoggedInState ? print('User is logged in') : print('User not logged in');
      setState(() {});

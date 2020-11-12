@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:dmvquizapp/controller/constants.dart';
 import 'package:dmvquizapp/controller/firebase/firebase_storage_class.dart';
-import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_auth_class.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +16,17 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   FirebaseAuthClass firebaseAuthSingleton = FirebaseAuthClass();
   TextEditingController textFieldText;
+  String userProfilePicUrl;
 
   @override
   void initState() {
     super.initState();
+
+    //Initializing Variables
     textFieldText = TextEditingController (text: '${firebaseAuthSingleton.getFirstName()}');
+    userProfilePicUrl = firebaseAuthSingleton.getUserPicture();
+
+    print('Here is image URL: $userProfilePicUrl');
   }
 
   @override
@@ -97,7 +102,7 @@ class _UserScreenState extends State<UserScreen> {
                               mainButtonOnTap: () {
                                 print('Test------------------');
                                 print('2 This is the full name ----> ${textFieldText.text}');
-                                firebaseAuthSingleton.setUserName(textFieldText.text);
+                                firebaseAuthSingleton.changeUserName(textFieldText.text);
 
                                 //firebaseAuthInstance.signOutUser();
                                 //Navigator.pushNamed(context, AppBottomNavigationBar.idToHomeScreen);
@@ -162,7 +167,10 @@ class _UserScreenState extends State<UserScreen> {
         FirebaseStorageClass firebaseStorageClass = FirebaseStorageClass();
         String userURL = await firebaseStorageClass.uploadFile(image);
         print("Here is new URL: $userURL");
-        firebaseAuthSingleton.setUserImage(userURL);
+        firebaseAuthSingleton.changeUserImage(userURL);
+        setState(() {
+          userProfilePicUrl = firebaseAuthSingleton.getUserPicture();
+        });
       },
       child: Container(
           width: 150.0,
@@ -172,7 +180,7 @@ class _UserScreenState extends State<UserScreen> {
               image: new DecorationImage(
                   fit: BoxFit.fill,
                   image:
-                      new NetworkImage(firebaseAuthSingleton.getUserPicture())))),
+                      new NetworkImage(userProfilePicUrl)))),
     );
   }
 }

@@ -19,23 +19,6 @@ SizedBox getSizedBox({double withHeight=0, double withWidth=0}){
   );
 }
 
-// Expanded getExitButton() {
-//   return Expanded(
-//     child: Align(
-//       child: IconButton(
-//         icon: Icon(
-//           LineAwesomeIcons.arrow_circle_left,
-//           size: 40.0,
-//           color: kLogoMatchingColor,
-//         ),
-//         onPressed: (){print('Exit Button pressed.');},
-//       ),//Icons()LineAwesomeIcons.
-//       alignment: Alignment.topLeft,
-//     ),
-//   );
-// }
-
-
 Expanded getExitButton({@required BuildContext context}) {
   return Expanded(
     child: Align(
@@ -67,20 +50,20 @@ void showExitDialog({@required BuildContext context}) {
           child: ListBody(
             children: <Widget>[
               Text('You will lose points earned in this round.'),
-              Text('Yre you sure about this?.'),
+              //Text('Click  to exit'),
             ],
           ),
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('No'),
+            child: Text('Continue Playing'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
 
           FlatButton(
-            child: Text('Yes'),
+            child: Text('Exit'),
             onPressed: () {
               Navigator.of(context).pop();
               //TODO: If points are being added while user is playing, make sure to not save it on firestore

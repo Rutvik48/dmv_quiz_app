@@ -1,4 +1,4 @@
-import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_auth_class.dart';
 import 'package:dmvquizapp/view/about_screen.dart';
 import 'package:dmvquizapp/view/login_screen.dart';
 import 'package:dmvquizapp/view/topic_screen.dart';

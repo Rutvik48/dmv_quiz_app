@@ -1,3 +1,4 @@
+import 'package:dmvquizapp/controller/custom_widgets.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'firebase_constants.dart';
@@ -16,6 +17,7 @@ class FireStoreClass {
     selectedTopic = topic;
   }
 
+  //Getting Questions from question_main_collection>new_york>[selected topic by user]
   Future<Map> getQuestion({@required String subCollectionName}) async {
     print("Get Data is Called");
     QuerySnapshot questions;
@@ -25,12 +27,13 @@ class FireStoreClass {
         ///TODO: Change this collection string to user selected topic
         .collection(selectedTopic)
         .get();
-
-    print(questions);
+    //print(questions);
 
     return changeIntoMap(questions);
   }
 
+  //Changing QuerySnapshot into Map<int, Map<String, dynamic>>
+  //That will be used to return a Map from different methods that gets data from Firestore
   Map changeIntoMap(QuerySnapshot querySnapshot) {
     Map questionBank = new Map<int, Map<String, dynamic>>();
 
@@ -43,21 +46,31 @@ class FireStoreClass {
         counter++;
       }
     }
-
     return questionBank;
   }
 
+  //Getting list of topics available from Firestore
+  //Gets FIREBASE_MAIN_QUIZ_COLLECTION>FIREBASE_MAIN_QUIZ_DOCUMENT>Get all data
+  //From all the data, it searches for 'main_topic' [FIREBASE_QUIZ_MAIN_TOPIC_ARRAY]
   Future<Map> getTopics() async {
 
+    DocumentSnapshot documents;
+    documents = await _getTopicDocumentSnapshot();
+
+    return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_MAIN_TOPIC_ARRAY);
+  }
+
+  Future<dynamic> _getTopicDocumentSnapshot() async {
     DocumentSnapshot documents;
     documents = await firestoreInstance
         .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
         .doc(FIREBASE_MAIN_QUIZ_DOCUMENT)
         .get();
 
-    return changeTopicsIntoMap(documentSnapshot: documents, topicString: FIREBASE_QUIZ_MAIN_TOPIC_ARRAY);
+    return documents;
   }
 
+  //
   Future<Map> getSubTopics(String selectedMainTopic) async {
 
     DocumentSnapshot documents;
@@ -72,14 +85,13 @@ class FireStoreClass {
 
     //print(documents);
     return changeSubTopicsIntoMap(documentSnapshot: documents);
-
   }
 
 
   Map createMap({@required DocumentSnapshot documentSnapshot, @required String topicString, trueForTopic=false}) {
     Map topicMap = new Map<String, String>();
 
-    print(documentSnapshot.data);
+    print('This is documentSnapshot.data : \n${documentSnapshot.data}');
 
     if (trueForTopic){
       documentSnapshot.data().forEach((key, value) {
@@ -93,6 +105,8 @@ class FireStoreClass {
         topicMap[key] = value;
       });
     }
+
+    print('This is topic Map: \n$topicMap');
     return topicMap;
   }
 
@@ -142,6 +156,28 @@ class FireStoreClass {
     // );
   }
 
+  Future<int> countTotalNumberOfQuestion () async {
+    Future<int> count;
+
+    var docs=await firestoreInstance
+        .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
+        .doc(FIREBASE_MAIN_QUIZ_DOCUMENT).get();
+
+    //firestoreInstance.
+    print ('Document data: ${docs.data()}');
+    print ('Document data.length: ${docs.data().length}');
+
+
+    // int count = await firestoreInstance
+    //     .collection(FIREBASE_MAIN_QUIZ_COLLECTION)
+    //     .doc(FIREBASE_MAIN_QUIZ_DOCUMENT)
+    //     .get();
+    // firestoreInstance.collection(FIREBASE_MAIN_USER_COLLECTION).
+    // doc(FIREBASE_MAIN_USER_DOCUMENT).
+    // collection(userEmail).snapshots().length;
+
+    return count;
+  }
 
   void addData() {
     final firestoreInstance = FirebaseFirestore.instance;

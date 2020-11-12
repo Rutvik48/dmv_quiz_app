@@ -1,5 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_auth_class.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FirebaseStorageClass{

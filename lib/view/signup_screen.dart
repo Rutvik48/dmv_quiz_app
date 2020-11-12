@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
 //import 'package:dmvquizapp/controller/sign_in_class.dart';
-import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_auth_class.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String id = 'signUp_screen';

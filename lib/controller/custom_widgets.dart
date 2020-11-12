@@ -1,6 +1,6 @@
 import 'package:dmvquizapp/controller/constants.dart';
-import 'package:dmvquizapp/controller/firebase_auth_class.dart';
-import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firebase/firestore_class.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

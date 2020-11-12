@@ -1,5 +1,5 @@
 import 'package:dmvquizapp/controller/constants.dart';
-import 'package:dmvquizapp/controller/firestore_class.dart';
+import 'package:dmvquizapp/controller/firebase/firestore_class.dart';
 import 'package:dmvquizapp/controller/quiz_screen_custom_widgets.dart';
 import 'package:dmvquizapp/view/bottomNavigationBar.dart';
 import 'package:dmvquizapp/view/signup_screen.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dmvquizapp/controller/custom_widgets.dart';
 import 'package:dmvquizapp/controller/sign_in_class.dart';
-import 'package:dmvquizapp/controller/firebase_auth_class.dart';
+import 'package:dmvquizapp/controller/firebase/firebase_auth_class.dart';
 import 'package:dmvquizapp/controller/custom_methods_class.dart';
 
 class LoginScreen extends StatefulWidget {
